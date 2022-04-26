@@ -1,0 +1,51 @@
+#crear nuevo usuario y luego cambiar datos en archivo connection.php
+CREATE USER 'gnu_exp'@'localhost' IDENTIFIED BY 'gnu_exp';
+GRANT ALL PRIVILEGES ON gnu_expedientes . * TO 'gnu_exp'@'localhost';
+FLUSH PRIVILEGES;
+
+================================================================================================
+
+#tabla exp_usuarios
+create table exp_usuarios (
+id int(11) auto_increment primary key, 
+nombre varchar(60) binary not null, 
+user varchar(90) binary not null, 
+password varchar(73) binary not null, 
+email varchar(90) not null, 
+role int(1) default 1 not null,
+avatar varchar(120)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+
+================================================================================================
+
+#tabla exp_expedientes
+create table exp_expedientes(
+id int(11) auto_increment primary key,
+nro_exp varchar(150) not null,
+fecha_ingreso date not null,
+asunto varchar(150) not null,
+procedencia varchar(150) not null,
+usuario_responsable varchar(150) not null,
+fecha_egreso date,
+destino varchar(150)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+================================================================================================
+
+#tabla carteras_ministerial
+create table exp_carteras_ministerial(
+id int(11) auto_increment primary key,
+cartera varchar(150) not null,
+subjurisdiccion varchar(300) not null,
+apertura varchar(300) not null,
+unidad varchar(300) not null,
+tipo_organismo varchar(200) not null
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+#subir csv carteras ministeriales
+load data local infile '/mnt/sda2/htdocs/expedientes/docs_base/cartera_ministerial_economia.csv' 
+into table exp_carteras_ministerial fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows
+(cartera,subjurisdiccion,apertura,unidad,tipo_organismo);
+
+================================================================================================

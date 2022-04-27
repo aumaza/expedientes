@@ -116,6 +116,13 @@
         if(isset($_POST['expedientes'])){
             $oneExp->listarExpedientes($oneExp,$conn,$dbase);
         }
+        if(isset($_POST['nuevo_ingreso'])){
+            $oneExp->formIngresoExpediente($conn,$dbase);
+        }
+        if(isset($_POST['edit_exp'])){
+            $id = mysqli_real_escape_string($conn,$_POST['id']);
+            $oneExp->formEditarExpediente($oneExp,$id,$conn,$dbase);
+        }
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //
         
@@ -138,6 +145,7 @@
 
 <!-- SECCION JAVASCRIPTS DE SISTEMA -->
 <script type="text/javascript" src="../libs/usuarios/lib_usuarios.js"></script>
+<script type="text/javascript" src="../libs/expedientes/lib_expedientes.js"></script>
 
 
 

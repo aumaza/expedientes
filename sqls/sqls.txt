@@ -44,7 +44,7 @@ tipo_organismo varchar(200) not null
 
 
 #subir csv carteras ministeriales
-load data local infile '/mnt/sda2/htdocs/expedientes/docs_base/cartera_ministerial_economia.csv' 
+load data local infile '/mnt/sdb1/server/htdocs/proyectos/expedientes/docs_base/cartera_ministerial_economia.csv' 
 into table exp_carteras_ministerial fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows
 (cartera,subjurisdiccion,apertura,unidad,tipo_organismo);
 

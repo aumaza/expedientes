@@ -107,6 +107,7 @@ class Expedientes{
                     <th class='text-nowrap text-center'>Usuario Responsable</th>
                     <th class='text-nowrap text-center'>Fecha Egreso</th>
                     <th class='text-nowrap text-center'>Destino</th>
+                    <th class='text-nowrap text-center'>Acciones</th>
                     <th>&nbsp;</th>
                     </thead>";
 
@@ -114,7 +115,7 @@ class Expedientes{
             while($fila = mysqli_fetch_array($resultado)){
                     // Listado normal
                     echo "<tr>";
-                    echo "<td align=center>".$oneExp->getNroExpediente($fila['nro_expediente'])."</td>";
+                    echo "<td align=center>".$oneExp->getNroExpediente($fila['nro_exp'])."</td>";
                     echo "<td align=center>".$oneExp->getFechaIngreso($fila['fecha_ingreso'])."</td>";
                     echo "<td align=center>".$oneExp->getAsunto($fila['asunto'])."</td>";
                     echo "<td align=center>".$oneExp->getProcedencia($fila['procedencia'])."</td>";
@@ -124,16 +125,18 @@ class Expedientes{
                     echo "<td class='text-nowrap'>";
                     
                     echo '<form <action="main.php" method="POST">
-                            <input type="hidden" name="id" value="'.$fila['id'].'">
-                                            
-                            <button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="top" title="Editar Datos del Expediente">
-                                <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>
-                            
-                            <button type="submit" class="btn btn-danger btn-sm" name="del_exp" data-toggle="tooltip" data-placement="top" title="Eliminar Registro">
-                                <img src="../../icons/actions/edit-delete.png"  class="img-reponsive img-rounded"> Borrar</button>
+                            <input type="hidden" name="id" value="'.$fila['id'].'">';
+                        
+                        if($oneExp->getFechaEgreso($fila['fecha_egreso']) == ''){
+                           echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="top" title="Editar Datos del Expediente">
+                                <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>';
+                        }
+                        
+                            echo '<button type="submit" class="btn btn-danger btn-sm" name="del_exp" data-toggle="tooltip" data-placement="top" title="Eliminar Registro">
+                                <img src="../../icons/actions/trash-empty.png"  class="img-reponsive img-rounded"> Borrar</button>
                             
                             <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="top" title="Envió de Expediente">
-                                <img src="../../icons/actions/help-about.png"  class="img-reponsive img-rounded"> Envío</button>
+                                <img src="../../icons/actions/mail-forward.png"  class="img-reponsive img-rounded"> Envío</button>
                                         
                     </form>
                     </td>';
@@ -160,7 +163,219 @@ class Expedientes{
 
             mysqli_close($conn);
 
-    }
+    } // FIN DE LA FUNCION
+    
+    
+/*
+** FORMULARIO DE ALTA
+*/
+public function formIngresoExpediente($conn,$dbase){
+
+      echo '<div class="container">
+	    <div class="row">
+	    <div class="col-sm-8">
+	      <h2>Cargar Ingreso Expediente</h2><hr>
+	        <form id="fr_nuevo_expediente_ajax" method="POST">
+	        
+	        <div class="form-group">
+            <label for="nro_expediente">Número de Expediente</label>
+            <input type="text" class="form-control" id="nro_expediente" name="nro_expediente"  placeholder="Ingrese el Número del expediente" required>
+            </div>
+	        
+	        <div class="form-group">
+            <label for="fecha_ingreso">Fecha Ingreso</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Ingrese una breve descripción del tema que trata el expediente" required>
+            </div>';
+		
+		
+		echo '<div class="form-group">
+                <label for="procedencia">Procedencia / Remitente</label>
+                <select class="form-control" id="procedencia" name="procedencia" required>
+                <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    echo '<option value="'.$valores[apertura].'">'.$valores[apertura].'</option>';
+			      }
+              }
+			}
+
+			  
+		 echo '</select>
+            </div>
+		
+		 <div class="form-group">
+		  <label for="usuario_responsable">Usuario Responsable</label>
+		  <select class="form-control" id="usuario_responsable" name="usuario_responsable" required>
+		  <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT nombre FROM exp_usuarios order by nombre ASC";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    if($valores['nombre'] != 'Administrador'){
+                        echo '<option value="'.$valores[nombre].'">'.$valores[nombre].'</option>';
+                    }    
+                  }
+              }
+			}
+
+			mysqli_close($conn);
+		  
+		 echo '</select>
+		</div><hr>
+		
+		
+		<button type="submit" class="btn btn-default btn-block" id="add_nuevo_expediente">
+            <img src="../../icons/devices/media-floppy.png"  class="img-reponsive img-rounded"> Guardar</button>
+	      </form> <hr>
+	      
+	    </div>
+	    </div>
+	</div>';
+
+} // FIN DE LA FUNCION
+
+
+/*
+** FORMULARIO DE ALTA
+*/
+public function formEditarExpediente($oneExp,$id,$conn,$dbase){
+        
+      $sql = "select * from exp_expedientes where id = '$id'";
+      mysqli_select_db($conn,$dbase);
+      $query = mysqli_query($conn,$sql);
+      $row = mysqli_fetch_assoc($query);
+
+      echo '<div class="container">
+	    <div class="row">
+	    <div class="col-sm-8">
+	      <h2>Editar Datos Expediente</h2><hr>
+	        <form id="fr_nuevo_expediente_ajax" method="POST">
+	        <input type="hidden" id="id" name="id" value="'.$id.'">
+	        
+	        <div class="form-group">
+            <label for="nro_expediente">Número de Expediente</label>
+            <input type="text" class="form-control" id="nro_expediente" name="nro_expediente" value="'.$oneExp->getNroExpediente($row['nro_exp']).'" required>
+            </div>
+	        
+	        <div class="form-group">
+            <label for="fecha_ingreso">Fecha Ingreso</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso"  value="'.$oneExp->getFechaIngreso($row['fecha_ingreso']).'" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input type="text" class="form-control" id="asunto" name="asunto"  value="'.$oneExp->getAsunto($row['asunto']).'" required>
+            </div>';
+		
+		
+		echo '<div class="form-group">
+                <label for="procedencia">Procedencia / Remitente</label>
+                <select class="form-control" id="procedencia" name="procedencia" required>
+                <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    echo '<option value="'.$valores[apertura].'" '.("'.$row[procedencia].'" == "'.$valores[apertura].'" ? "selected" : "").'>'.$valores[apertura].'</option>';
+			      }
+              }
+			}
+
+			  
+		 echo '</select>
+            </div>
+		
+		 <div class="form-group">
+		  <label for="usuario_responsable">Usuario Responsable</label>
+		  <select class="form-control" id="usuario_responsable" name="usuario_responsable" required>
+		  <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT nombre FROM exp_usuarios order by nombre ASC";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    if($valores['nombre'] != 'Administrador'){
+                        echo '<option value="'.$valores[nombre].'" '.("'.$row[usuario_responsable].'" == "'.$valores[nombre].'" ? "selected" : "").'>'.$valores[nombre].'</option>';
+                    }    
+                  }
+              }
+			}
+
+			mysqli_close($conn);
+		  
+		 echo '</select>
+		</div><hr>
+		
+		
+		<button type="submit" class="btn btn-default btn-block" id="add_nuevo_expediente">
+            <img src="../../icons/actions/view-refresh.png"  class="img-reponsive img-rounded"> Actualizar</button>
+	      </form> <hr>
+	      
+	    </div>
+	    </div>
+	</div>';
+
+} // FIN DE LA FUNCION
+
+
+
+
+public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$conn,$dbase){
+
+    if($conn){
+
+    $sql = "INSERT INTO exp_expedientes ".
+                "(
+                  nro_exp,
+                  fecha_ingreso,
+                  asunto,
+                  procedencia,
+                  usuario_responsable
+                  )".
+                "VALUES ".
+                "(
+                  $oneExp->setNroExpediente('$nro_expediente'),
+                  $oneExp->setFechaIngreso('$fecha_ingreso'),
+                  $oneExp->setAsunto('$asunto'),
+                  $oneExp->setProcedencia('$procedencia'),
+                  $oneExp->setUsuarioResponsable('$usuario_responsable')
+                  )";
+        
+        mysqli_select_db($conn,$dbase);
+        $query = mysqli_query($conn,$sql);
+        
+        if($query){
+            echo 1;
+        }else{
+            echo -1;
+        }
+        }else{
+            echo 9; // sin conexion
+        }
+
+} // FIN DE LA FUNCION
     
 } // FIN DE CLASE
 

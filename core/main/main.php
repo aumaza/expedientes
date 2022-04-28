@@ -123,6 +123,10 @@
             $id = mysqli_real_escape_string($conn,$_POST['id']);
             $oneExp->formEditarExpediente($oneExp,$id,$conn,$dbase);
         }
+        if(isset($_POST['salida_exp'])){
+            $id = mysqli_real_escape_string($conn,$_POST['id']);
+            $oneExp->formEnviarExpediente($oneExp,$id,$conn,$dbase);
+        }
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //
         

@@ -124,21 +124,23 @@ class Expedientes{
                     echo "<td align=center>".$oneExp->getDestino($fila['destino'])."</td>";
                     echo "<td class='text-nowrap'>";
                     
-                    echo '<form <action="main.php" method="POST">
+                    echo '<form action="#" id="fr_delete_expediente_ajax" method="POST">
                             <input type="hidden" name="id" value="'.$fila['id'].'">';
                         
                         if($oneExp->getFechaEgreso($fila['fecha_egreso']) == ''){
                            echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="top" title="Editar Datos del Expediente">
-                                <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>';
-                        }
-                        
-                            echo '<button type="submit" class="btn btn-danger btn-sm" name="del_exp" data-toggle="tooltip" data-placement="top" title="Eliminar Registro">
+                                <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>
+                                
+                           <button type="submit" class="btn btn-danger btn-sm" id="delete_expediente" data-toggle="tooltip" data-placement="top" title="Eliminar Registro">
                                 <img src="../../icons/actions/trash-empty.png"  class="img-reponsive img-rounded"> Borrar</button>
                             
                             <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="top" title="Envió de Expediente">
-                                <img src="../../icons/actions/mail-forward.png"  class="img-reponsive img-rounded"> Envío</button>
+                                <img src="../../icons/actions/mail-forward.png"  class="img-reponsive img-rounded"> Envío</button>';
+                        }
+                        
+                            
                                         
-                    </form>
+              echo '</form>
                     </td>';
                     $count++;
                 }
@@ -264,7 +266,7 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
 	    <div class="row">
 	    <div class="col-sm-8">
 	      <h2>Editar Datos Expediente</h2><hr>
-	        <form id="fr_nuevo_expediente_ajax" method="POST">
+	        <form id="fr_update_expediente_ajax" method="POST">
 	        <input type="hidden" id="id" name="id" value="'.$id.'">
 	        
 	        <div class="form-group">
@@ -306,7 +308,7 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
 		
 		 <div class="form-group">
 		  <label for="usuario_responsable">Usuario Responsable</label>
-		  <select class="form-control" id="usuario_responsable" name="usuario_responsable" required>
+		  <select class="form-control" id="usuario_responsable" name="usuario_responsable"asunto required>
 		  <option value="" disabled selected>Seleccionar</option>';
 		    
 		    if($conn){
@@ -329,8 +331,73 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
 		</div><hr>
 		
 		
-		<button type="submit" class="btn btn-default btn-block" id="add_nuevo_expediente">
+		<button type="submit" class="btn btn-default btn-block" id="update_expediente">
             <img src="../../icons/actions/view-refresh.png"  class="img-reponsive img-rounded"> Actualizar</button>
+	      </form> <hr>
+	      
+	    </div>
+	    </div>
+	</div>';
+
+} // FIN DE LA FUNCION
+
+
+/*
+** FORMULARIO DE ALTA
+*/
+public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
+        
+      $sql = "select * from exp_expedientes where id = '$id'";
+      mysqli_select_db($conn,$dbase);
+      $query = mysqli_query($conn,$sql);
+      $row = mysqli_fetch_assoc($query);
+
+      echo '<div class="container">
+            <div class="row">
+            <div class="col-sm-8">
+	      
+	     
+            <h2>Enviar Expediente</h2>
+            <div class="list-group">
+                <a href="#" class="list-group-item active"><strong>Expediente Nro.:</strong> '.$oneExp->getNroExpediente($row['nro_exp']).'</a>
+                <a href="#" class="list-group-item"><strong>Fecha Ingreso:</strong> '.$oneExp->getFechaIngreso($row['fecha_ingreso']).'</a>
+                <a href="#" class="list-group-item"><strong>Asunto:</strong> '.$oneExp->getAsunto($row['asunto']).'</a>
+                <a href="#" class="list-group-item"><strong>Usuario Responsable:</strong> '.$oneExp->getUsuarioResponsable($row['usuario_responsable']).'</a>
+            </div><hr>
+                  
+	      
+	        <form id="fr_update_enviar_expediente_ajax" method="POST">
+	        <input type="hidden" id="id" name="id" value="'.$id.'">
+	        
+	        <div class="form-group">
+            <label for="fecha_egreso">Fecha Egreso</label>
+            <input type="date" class="form-control" id="fecha_egreso" name="fecha_egreso" required>
+            </div>';
+		
+		echo '<div class="form-group">
+                <label for="destino">Destino / Receptor</label>
+                <select class="form-control" id="destino" name="destino" required>
+                <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    echo '<option value="'.$valores[apertura].'" >'.$valores[apertura].'</option>';
+			      }
+              }
+			}
+
+			  
+		 echo '</select>
+            </div><hr>
+		
+		
+		<button type="submit" class="btn btn-default btn-block" id="update_enviar_expediente">
+            <img src="../../icons/actions/legalmoves.png"  class="img-reponsive img-rounded"> Enviar</button>
 	      </form> <hr>
 	      
 	    </div>
@@ -376,7 +443,85 @@ public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asu
         }
 
 } // FIN DE LA FUNCION
+
+
+public function updateIngresoExpediente($oneExp,$id,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$conn,$dbase){
+
+    if($conn){
+        
+        $sql = "update exp_expedientes set
+                nro_exp = $oneExp->setNroExpediente('$nro_expediente'),
+                fecha_ingreso = $oneExp->setFechaIngreso('$fecha_ingreso'),
+                asunto = $oneExp->setAsunto('$asunto'),
+                procedencia = $oneExp->setProcedencia('$procedencia'),
+                usuario_responsable = $oneExp->setUsuarioResponsable('$usuario_responsable')
+                where id = '$id'";
+        
+        $query = mysqli_query($conn,$sql);
+        mysqli_select_db($conn,$dbase);
+        
+        if($query){
+            echo 1; // actualizacion exitosa
+        }else{
+            echo -1; // hubo un problema al intentar Actualizar el registro
+        }
     
+    }else{
+        echo 9; // no hay conexion
+    }
+
+} // FIN DE LA FUNCION
+
+
+public function deleteRegistroExpediente($id,$conn,$dbase){
+
+    if($conn){
+    
+        $sql = "delete from exp_expedientes where id = '$id'";
+        mysqli_select_db($conn,$dbase);
+        $query = mysqli_query($conn,$sql);
+        
+        if($query){
+            echo 1; // registro eliminado 
+        }else{
+            echo -1; // error al intentar eliminar registro
+        }
+        
+    }else{
+        echo 9; // no hay conexion
+    }
+
+} // FIN DE LA FUNCION
+
+
+public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$conn,$dbase){
+
+    if($conn){
+    
+        $sql = "update exp_expedientes set
+                fecha_egreso = $oneExp->setFechaEgreso('$fecha_egreso'),
+                destino = $oneExp->setDestino('$destino')
+                where id = '$id'";
+        
+        $query = mysqli_query($conn,$sql);
+        mysqli_select_db($conn,$dbase);
+        
+        if($query){
+            echo 1; // actualizacion exitosa
+        }else{
+            echo -1; // hubo un problema al intentar Actualizar el registro
+        }
+    
+    
+    
+    }else{
+        echo 9; // sin conexion
+    }
+
+
+}
+
+
 } // FIN DE CLASE
 
 

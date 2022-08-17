@@ -91,14 +91,11 @@ class Expedientes{
                 $resultado = mysqli_query($conn,$sql);
             //mostramos fila x fila
             $count = 0;
-            echo '<div class="container-fluid" style="margin-top:70px">
-                    <div class="panel panel-default" >
-                <div class="panel-heading"><span class="pull-center "><img src="../../icons/mimetypes/application-epub+zip.png"  class="img-reponsive img-rounded"> Listado de Expedientes';
+            echo '<div class="container-fluid">
+                    <div class="jumbotron">
+                    <h3><span class="pull-center "><span class="glyphicon glyphicon-list-alt"></span> Listado de Expedientes</h3><hr>';
             
-                
-            echo '</div><br>';
-
-                    echo "<table class='table table-condensed table-hover' style='width:100%' id='myTable'>";
+                    echo "<table class='table table-condensed table-hover' style='width:100%' id='expTable'>";
                     echo "<thead>
                     <th class='text-nowrap text-center'>Nro. Expediente</th>
                     <th class='text-nowrap text-center'>Fecha Ingreso</th>
@@ -108,7 +105,6 @@ class Expedientes{
                     <th class='text-nowrap text-center'>Fecha Egreso</th>
                     <th class='text-nowrap text-center'>Destino</th>
                     <th class='text-nowrap text-center'>Acciones</th>
-                    <th>&nbsp;</th>
                     </thead>";
 
 
@@ -125,16 +121,16 @@ class Expedientes{
                     echo "<td class='text-nowrap'>";
                     
                     echo '<form action="#" id="fr_delete_expediente_ajax" method="POST">
-                            <input type="hidden" name="id" value="'.$fila['id'].'">';
+                            <input type="hidden" id="id" name="id" value="'.$fila['id'].'">';
                         
                         if($oneExp->getFechaEgreso($fila['fecha_egreso']) == ''){
-                           echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="top" title="Editar Datos del Expediente">
+                           echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="left" title="Editar Datos del Expediente">
                                 <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>
                                 
-                           <button type="submit" class="btn btn-danger btn-sm" id="delete_expediente" data-toggle="tooltip" data-placement="top" title="Eliminar Registro">
+                           <button type="submit" class="btn btn-danger btn-sm" id="delete_expediente" data-toggle="tooltip" data-placement="left" title="Eliminar Registro Nro.: '.$fila['id'].'">
                                 <img src="../../icons/actions/trash-empty.png"  class="img-reponsive img-rounded"> Borrar</button>
                             
-                            <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="top" title="Envió de Expediente">
+                            <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="left" title="Envió de Expediente">
                                 <img src="../../icons/actions/mail-forward.png"  class="img-reponsive img-rounded"> Envío</button>';
                         }
                         
@@ -146,7 +142,7 @@ class Expedientes{
                 }
 
                 echo "</table>";
-                echo "<br>";
+                echo "<hr>";
                 
                 echo '<form <action="main.php" method="POST">
                     <button type="submit" class="btn btn-default btn-sm" name="nuevo_ingreso" data-toggle="tooltip" data-placement="top" title="Agregar Ingreso Expediente">
@@ -155,9 +151,9 @@ class Expedientes{
                     <button type="submit" class="btn btn-default btn-sm" name="busqueda_avanzada" data-toggle="tooltip" data-placement="top" title="Búsqueda Avanzada de Expedientes">
                     <img src="../../icons/actions/system-search.png"  class="img-reponsive img-rounded"> Búsqueda Avanzada</button>
                     
-              </form><br>';
+              </form><hr>';
                 
-                echo '<button type="button" class="btn btn-primary">Cantidad de Registros:  '.$count.' </button>';
+                echo '<div class="alert alert-info"><span class="glyphicon glyphicon-option-vertical"></span> Cantidad de Registros:  '.$count.' </div><hr>';
                 echo '</div></div>';
                 }else{
                 echo 'Connection Failure...' .mysqli_error($conn);
@@ -174,9 +170,10 @@ class Expedientes{
 public function formIngresoExpediente($conn,$dbase){
 
       echo '<div class="container">
+	    <div class="jumbotron">
 	    <div class="row">
-	    <div class="col-sm-8">
-	      <h2>Cargar Ingreso Expediente</h2><hr>
+	    <div class="col-sm-12">
+	       <h2><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Cargar Ingreso Expediente</h2><hr>
 	        <form id="fr_nuevo_expediente_ajax" method="POST">
 	        
 	        <div class="form-group">
@@ -245,9 +242,12 @@ public function formIngresoExpediente($conn,$dbase){
             <img src="../../icons/devices/media-floppy.png"  class="img-reponsive img-rounded"> Guardar</button>
 	      </form> <hr>
 	      
+	      
+	      <div id="messageNewExp"></div>
+	      
 	    </div>
 	    </div>
-	</div>';
+	</div></div>';
 
 } // FIN DE LA FUNCION
 
@@ -263,9 +263,10 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
       $row = mysqli_fetch_assoc($query);
 
       echo '<div class="container">
+        <div class="jumbotron">
 	    <div class="row">
-	    <div class="col-sm-8">
-	      <h2>Editar Datos Expediente</h2><hr>
+	    <div class="col-sm-12">
+	      <h2><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar Datos Expediente</h2><hr>
 	        <form id="fr_update_expediente_ajax" method="POST">
 	        <input type="hidden" id="id" name="id" value="'.$id.'">
 	        
@@ -337,7 +338,7 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
 	      
 	    </div>
 	    </div>
-	</div>';
+	</div></div>';
 
 } // FIN DE LA FUNCION
 
@@ -353,11 +354,12 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
       $row = mysqli_fetch_assoc($query);
 
       echo '<div class="container">
+            <div class="jumbotron">
             <div class="row">
-            <div class="col-sm-8">
+            <div class="col-sm-12">
 	      
 	     
-            <h2>Enviar Expediente</h2>
+            <h2><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Enviar Expediente</h2>
             <div class="list-group">
                 <a href="#" class="list-group-item active"><strong>Expediente Nro.:</strong> '.$oneExp->getNroExpediente($row['nro_exp']).'</a>
                 <a href="#" class="list-group-item"><strong>Fecha Ingreso:</strong> '.$oneExp->getFechaIngreso($row['fecha_ingreso']).'</a>
@@ -397,12 +399,12 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
 		
 		
 		<button type="submit" class="btn btn-default btn-block" id="update_enviar_expediente">
-            <img src="../../icons/actions/legalmoves.png"  class="img-reponsive img-rounded"> Enviar</button>
+            <span class="glyphicon glyphicon-share" aria-hidden="true"></span> Enviar</button>
 	      </form> <hr>
 	      
 	    </div>
 	    </div>
-	</div>';
+	</div></div>';
 
 } // FIN DE LA FUNCION
 

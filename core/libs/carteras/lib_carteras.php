@@ -71,13 +71,10 @@ class Carteras{
                 $resultado = mysqli_query($conn,$sql);
             //mostramos fila x fila
             $count = 0;
-            echo '<div class="container-fluid" style="margin-top:70px">
-                    <div class="panel panel-default" >
-                <div class="panel-heading"><span class="pull-center "><img src="../../icons/actions/meeting-attending.png"  class="img-reponsive img-rounded"> Listado de Dependencias';
+            echo '<div class="container-fluid">
+                    <div class="jumbotron">
+                    <h3><span class="pull-center "><span class="glyphicon glyphicon-list-alt"></span> Listado de Dependencias</h3><hr>';
             
-                
-            echo '</div><br>';
-
                     echo "<table class='table table-condensed table-hover' style='width:100%' id='myTable'>";
                     echo "<thead>
                     <th class='text-nowrap text-center'>Cartera</th>
@@ -97,8 +94,8 @@ class Carteras{
                 }
 
                 echo "</table>";
-                echo "<br>";
-                echo '<button type="button" class="btn btn-primary">Cantidad de Registros:  '.$count.' </button>';
+                echo "<hr>";
+                echo '<div class="alert alert-info"><span class="glyphicon glyphicon-option-vertical"></span> Cantidad de Registros:  '.$count.' </div><hr>';
                 echo '</div></div>';
                 }else{
                 echo 'Connection Failure...' .mysqli_error($conn);

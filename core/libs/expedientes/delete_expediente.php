@@ -8,7 +8,7 @@
             
             $id = mysqli_real_escape_string($conn,$_POST['id']);
                         
-            if(id == ''){
+            if($id == ''){
                 echo 3; // no existe el id
             }else{
                 $oneExp->deleteRegistroExpediente($id,$conn,$dbase);

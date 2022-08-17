@@ -10,6 +10,7 @@ $(document).ready(function(){
         "scrollCollapse": true,
         "paging":         true,
         "fixedColumns": true,
+        "deferRender": true,
       "language":{
         "lengthMenu": "Mostrar _MENU_ registros por pagina",
         "info": "Mostrando pagina _PAGE_ de _PAGES_",

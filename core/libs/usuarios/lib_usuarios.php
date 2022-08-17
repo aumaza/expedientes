@@ -74,11 +74,10 @@ class Usuarios{
     
     public function moduloUsuarios($oneUsuario,$conn,$dbase){
     
-        echo '<div class="container">
+        echo '<div class="container-fluid">
 
-                <div class="panel-group">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><img src="../../icons/status/meeting-chair.png"  class="img-reponsive img-rounded"> Adminstración Usuarios</div>
+                    <div class="jumbotron">
+                    <h3><span class="pull-center "><span class="glyphicon glyphicon-user"></span> Administración de Usuarios</h3><hr>
                             <div class="panel-body"> 
                                 <ul class="nav nav-tabs nav-justified">
                                     <li class="active"><a href="#usuarios" a data-toggle="tab"><img src="../../icons/actions/meeting-attending.png"  class="img-reponsive img-rounded"> Usuarios</a></li>
@@ -102,7 +101,7 @@ class Usuarios{
                                 </div>
                                 
                                 
-                            </div>
+                            
                     </div>
                 </div>
 
@@ -115,10 +114,10 @@ class Usuarios{
 
     public function formAltausuarios(){
     
-        echo '<div class="container" >
+        
            
                 
-                     <form id="fr_nuevo_usuario_ajax" method="POST">
+                echo '<form id="fr_nuevo_usuario_ajax" method="POST">
                     <div class="container" style="margin-left:100px">
                         <div class="row">
                             
@@ -149,8 +148,7 @@ class Usuarios{
                         </div>
                         
                    
-                        </form> 
-                </div>';
+                        </form>';
     
     } // FIN METODO
 
@@ -164,12 +162,10 @@ class Usuarios{
                 $resultado = mysqli_query($conn,$sql);
             //mostramos fila x fila
             $count = 0;
-            echo '<div class="container-fluid" style="margin-top:70px">
-                    <div class="panel panel-default" >
-                <div class="panel-heading"><span class="pull-center "><img src="../../icons/actions/meeting-attending.png"  class="img-reponsive img-rounded"> Listado de Usuarios';
-            
-                
-            echo '</div><br>';
+            echo '<div class="panel panel-default" >
+                    <div class="panel-heading"><span class="pull-center ">
+                        <img src="../../icons/actions/meeting-attending.png"  class="img-reponsive img-rounded"> Listado de Usuarios 
+                    </div><br>';
 
                     echo "<table class='table table-condensed table-hover' style='width:100%' id='myTable'>";
                     echo "<thead>
@@ -199,9 +195,9 @@ class Usuarios{
                 }
 
                 echo "</table>";
-                echo "<br>";
-                echo '<button type="button" class="btn btn-primary">Cantidad de Usuarios:  '.$count.' </button>';
-                echo '</div></div>';
+                echo "<hr>";
+                echo '<div class="alert alert-info"><span class="glyphicon glyphicon-option-vertical"></span> Cantidad de Usuarios:  '.$count.' </div><hr>';
+                echo '</div><hr>';
                 }else{
                 echo 'Connection Failure...' .mysqli_error($conn);
                 }
@@ -219,10 +215,10 @@ class Usuarios{
                 $resultado = mysqli_query($conn,$sql);
             //mostramos fila x fila
             $count = 0;
-            echo '<div class="container" style="margin-top:70px">
-                <div class="alert alert-success">
-                <img src="../../icons/actions/user-group-properties.png"  class="img-reponsive img-rounded"> Mis Datos
-                </div>';
+            echo '<div class="container-fluid">
+
+                    <div class="jumbotron">
+                    <h3><span class="pull-center "><span class="glyphicon glyphicon-user"></span> Cambiar Password</h3><hr>';
                 
                     echo "<table class='display compact' style='width:100%' id='myTable'>";
                     echo "<thead>
@@ -246,7 +242,7 @@ class Usuarios{
                     $count++;
                 }
 
-                echo "</table><br></div>";
+                echo "</table><hr></div>";
                 
                 }else{
                 echo 'Connection Failure...';

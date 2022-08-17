@@ -50,35 +50,34 @@
   <link rel="stylesheet" href="main.css" >
   <?php skeleton(); ?>
   
-    <script type="text/javascript" src="main.js"></script>
-   
-
  
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50" onload="nobackbutton();">
+<body data-spy="scroll" data-target=".navbar" data-offset="50" onload="nobackbutton();" style = "background: #839192;">
 
 <div class="panel-group">
     
         <!-- ENCABEZAD0  -->
     <?php encabezado(); ?>
     
-        <!-- NAVBAR  -->
-    <?php navBar($_SESSION['user'],$nombre); ?>
-
-        <!-- LEFT PANEL -->
-    <?php leftPanel($_SESSION['user']); ?>
-
-  
-
-        <!-- CENTRAL PANEL -->
-	  <div class="col-sm-10 text-left"> 
+        <!-- MAIN NAVBAR  -->
+    <?php mainNavBar($nombre); ?>
         
-            <!-- BOTONES INFORMATIVOS -->
-        <?php infoButttons(); ?>
+
+        <!-- MAIN MENU -->
+           
           
       <?php
    
       if($conn){
+        // =================================================== SYSTEM OUT ========================================== //
+        if(isset($_POST['logout'])){
+            logOut($nombre);
+        }
+        
+        // =================================================== SYSTEM HOME ========================================== //
+        if(isset($_POST['home'])){
+            mainFlyer();
+        }
         
         // =================================================== ESPACIO USUARIOS ========================================== //
         // se crea el objeto
@@ -142,14 +141,16 @@
       
       
     
-     </div>
+     
  
-  </div>
+ 
 </div><br>
 
 <!-- SECCION JAVASCRIPTS DE SISTEMA -->
 <script type="text/javascript" src="../libs/usuarios/lib_usuarios.js"></script>
+<script type="text/javascript" src="main.js"></script>
 <script type="text/javascript" src="../libs/expedientes/lib_expedientes.js"></script>
+
 
 
 

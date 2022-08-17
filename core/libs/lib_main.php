@@ -12,6 +12,47 @@ function encabezado(){
           </div>';
 }
 
+function mainNavBar($nombre){
+
+    echo '<nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                
+                <div class="btn-group">
+                <button type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Inicio <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu">
+                    
+                    <form action="" method="POST">
+                        
+                        <li><button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span> Expedientes</button></li>
+                        <li><button type="submit" class="btn btn-default btn-block" name="statistics"><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Estadísticas</button></li>
+                        <li><button type="submit" class="btn btn-default btn-block" name="carteras"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Dependencias</button></li>';
+                        
+                        if($nombre == 'Administrador'){
+                            echo '<li><button type="submit" class="btn btn-default btn-block" name="usuarios"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuarios</button></li>';
+                        }
+                echo '<li><button type="submit" class="btn btn-warning btn-block" name="usuario"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Cambiar Password</button></li>
+                        <li class="divider"></li>
+                        <li><button type="submit" class="btn btn-danger btn-block" name="logout"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Salir</button></li>
+                        
+                        
+                    </form>
+                    
+                </ul>
+                
+                </div>
+                
+                </div>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <form action="main.php" method="POST">
+                        <button class="btn btn-default navbar-btn" name="home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home</button>
+                    </form>
+                </ul>
+                
+            </div>
+            </nav>';
+}
 
 // BARRA DE NAVEGACION
 function navBar($varsession,$nombre){
@@ -148,6 +189,25 @@ function infoButttons(){
 
 }
 
+
+/*
+** SYSTEM LOGOUT
+*/
+function logOut($nombre){
+    
+    $img = file_get_contents('../../img/loading_1.gif');
+    $img_64 = base64_encode($img);
+    $image_source = 'data: image/gif;base64,' . $img_64;
+    
+    echo ' <div class="container">
+            <div class="jumbotron">
+                <h1 align="center">Hasta Luego '.$nombre.'</h1><hr>
+                <p align="center"><img src="'.$image_source.'"  class="img-reponsive img-rounded" width="256" height="256"></p><hr>
+                <meta http-equiv="refresh" content="5;URL=../../logout.php "/>
+            </div>
+            </div>';
+
+}
 
 
 ?>

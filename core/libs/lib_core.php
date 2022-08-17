@@ -21,8 +21,8 @@ function skeleton(){
         <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="/expedientes/skeleton/js/jquery-3.4.1.min.js"></script>
+        <script src="/expedientes/skeleton/js/jquery-3.5.1.min.js"></script>
         <script src="/expedientes/skeleton/js/bootstrap.min.js"></script>
         
         <script src="/expedientes/skeleton/js/jquery.dataTables.min.js"></script>
@@ -120,7 +120,25 @@ function logIn($user,$pass,$conn,$dbase){
 				}
 }
 
-
+/*
+** FUNCION MENSAJE FLYER
+*/
+function mainFlyer(){
+    
+    $img = file_get_contents('../../img/expedientes-img.png');
+    $img_64 = base64_encode($img);
+    $image_source = 'data: image/jpeg;base64,' . $img_64;
+    
+    echo '<div class="container"><br>
+            <div class="jumbotron">
+                <h1 align=center><img src="'.$image_source.'" class="img-thumbnail" alt="logo" width="600" height="300"></h1><hr>
+                <div class="alert alert-info">
+                <p align=center><span class="glyphicon glyphicon-inbox" aria-hidden="true"></span> Administración de Expedientes</p>
+                </div><hr>
+                
+            </div>
+          </div>';
+}
 
 
 ?>

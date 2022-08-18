@@ -187,11 +187,10 @@ $(document).ready(function(){
 ** eliminar registro
 */
 $(document).ready(function(){
-    $('#delete_expediente').click(function(){
+    $('#eliminar_exp').click(function(){
         //var datos=$('#fr_delete_expediente_ajax').serialize();
-        var id = document.getElementById('id').value;
-        console.log(id);
-        var agree = confirm("¿Esta seguro que desea eliminar el registro con ID Nro.: "+ id + "?");
+        
+        var agree = confirm("¿Esta seguro que desea eliminar el registro?");
         
         if(agree){
             
@@ -203,25 +202,32 @@ $(document).ready(function(){
             data:datos,
             success:function(r){
                 if(r==1){
-                    alert("Registro Eliminado Exitosamente!!");
+                    var mensaje = '<br><div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Registro Eliminado Exitosamente</p></div><hr><form action="#" method="POST"><button type="submit" class="btn btn-default btn-block" name="expedientes"> Ir a Expedientes</button></form>';
+                    document.getElementById('messageDeleteExpediente').innerHTML = mensaje;
+                    document.getElementById('nro_exp').disabled = true;
+                    document.getElementById('asunto').disabled = true;
+                    document.getElementById('eliminar_exp').disabled = true;
                     console.log("Datos: " + datos);
-                    window.location.href="main.php";
+                    
                 }else if(r==-1){
-                    alert("Hubo un problema al intentar eliminar el registro");
-                    console.log("Datos: " + datos);
-                }else if(r == 2){
-                    alert("Hay campos en los cuales ingresó caracteres no válidos");
+                    var mensaje = '<br><div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> Hubo un problema al intentar el registro</p></div><hr><form action="#" method="POST"><button type="submit" class="btn btn-default btn-block" name="expedientes"> Ir a Expedientes</button></form>';
+                    document.getElementById('messageDeleteExpediente').innerHTML = mensaje;
                     console.log("Datos: " + datos);
                 }else if(r == 3){
-                    alert("No se ha obtenido el ID del Registro!!");
+                    var mensaje = '<br><div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> No se ha obtenido el ID del Registro!!</p></div><hr><form action="#" method="POST"><button type="submit" class="btn btn-default btn-block" name="expedientes"> Ir a Expedientes</button></form>';
+                    document.getElementById('messageDeleteExpediente').innerHTML = mensaje;
                     console.log("Datos: " + datos);
                 }
                 else if(r == 7){
-                    alert("No hay Conexion a la base de datos");
+                    var mensaje = '<br><div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-warning-ban-circle" aria-hidden="true"></span> Sin Conexión a la Base de Datos!!</p></div><hr><form action="#" method="POST"><button type="submit" class="btn btn-default btn-block" name="expedientes"> Ir a Expedientes</button></form>';
+                    document.getElementById('messageDeleteExpediente').innerHTML = mensaje;
+                    console.log("Datos: " + datos);
                     console.log("Datos: " + datos);
                 }
                 else if(r == 9){
-                    alert('Sin Conexion en la función principal');
+                    var mensaje = '<br><div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-warning-ban-circle" aria-hidden="true"></span> Sin Conexión a la Base de Datos en la Función Principal!!</p></div><hr><form action="#" method="POST"><button type="submit" class="btn btn-default btn-block" name="expedientes"> Ir a Expedientes</button></form>';
+                    document.getElementById('messageDeleteExpediente').innerHTML = mensaje;
+                    console.log("Datos: " + datos);
                 }
                 
                 

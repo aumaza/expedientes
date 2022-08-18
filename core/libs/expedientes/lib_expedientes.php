@@ -120,14 +120,14 @@ class Expedientes{
                     echo "<td align=center>".$oneExp->getDestino($fila['destino'])."</td>";
                     echo "<td class='text-nowrap'>";
                     
-                    echo '<form action="#" id="fr_delete_expediente_ajax" method="POST">
+                    echo '<form action="#" method="POST">
                             <input type="hidden" id="id" name="id" value="'.$fila['id'].'">';
                         
                         if($oneExp->getFechaEgreso($fila['fecha_egreso']) == ''){
                            echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="left" title="Editar Datos del Expediente">
                                 <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>
                                 
-                           <button type="submit" class="btn btn-danger btn-sm" id="delete_expediente" data-toggle="tooltip" data-placement="left" title="Eliminar Registro Nro.: '.$fila['id'].'">
+                           <button type="submit" class="btn btn-danger btn-sm" name="delete_expediente" data-toggle="tooltip" data-placement="left" title="Eliminar Registro">
                                 <img src="../../icons/actions/trash-empty.png"  class="img-reponsive img-rounded"> Borrar</button>
                             
                             <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="left" title="Envió de Expediente">
@@ -408,6 +408,49 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
 
 } // FIN DE LA FUNCION
 
+
+public function formDeleteExpediente($id,$oneExp,$conn,$dbase){
+    
+    mysqli_select_db($conn,$dbase);
+    $sql = "select * from exp_expedientes where id = '$id'";
+    $query = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_assoc($query);
+    
+    echo '<div class="container">
+  
+            <div class="jumbotron">
+                <h3><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Eliminar Registro</h3><hr>     
+                
+                <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> <strong>Atención!</strong> Está por eliminar un registro con los siguientes datos. Si está seguro presione <strong>Aceptar</strong>, de lo contrario presione <strong>Volver a Expedientes</strong>.
+                </div><hr>
+                
+            <form id="fr_delete_expediente_ajax" method="POST">
+            <input type="hidden" id="id" name="id" value="'.$id.'">
+            
+            <div class="form-group">
+                <label for="expediente">Expediente NRO.:</label>
+                <input type="text" class="form-control" id="nro_exp" name="nro_exp" value="'.$oneExp->getNroExpediente($row['nro_exp']).'" readonly>
+            </div>
+            <div class="form-group">
+                <label for="asunto">Asunto:</label>
+                <input type="text" class="form-control" id="asunto" name="asunto" value="'.$oneExp->getAsunto($row['asunto']).'" readonly>
+            </div>
+            
+            <button type="submit" class="btn btn-default btn-block" id="eliminar_exp"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Aceptar</button>
+            </form>
+            <form actino="#" method="POST">
+            <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
+            </form>
+            <hr>
+            
+            <div id="messageDeleteExpediente"></div>
+                
+            </div>
+                
+        </div>';
+
+}
 
 
 

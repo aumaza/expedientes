@@ -126,6 +126,10 @@
             $id = mysqli_real_escape_string($conn,$_POST['id']);
             $oneExp->formEnviarExpediente($oneExp,$id,$conn,$dbase);
         }
+        if(isset($_POST['delete_expediente'])){
+            $id = mysqli_real_escape_string($conn,$_POST['id']);
+            $oneExp->formDeleteExpediente($id,$oneExp,$conn,$dbase);
+        }
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //
         

@@ -198,13 +198,13 @@ public function formIngresoExpediente($conn,$dbase){
                 <option value="" disabled selected>Seleccionar</option>';
 		    
 		    if($conn){
-		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
+		      $query = "SELECT cartera, apertura FROM exp_carteras_ministerial group by apertura";
 		      mysqli_select_db($conn,$dbase);
 		      $res = mysqli_query($conn,$query);
 
 		      if($res){
 				  while ($valores = mysqli_fetch_array($res)){
-                    echo '<option value="'.$valores[apertura].'">'.$valores[apertura].'</option>';
+                    echo '<option value="'.$valores[apertura].'">'.$valores[cartera].' - '.$valores[apertura].'</option>';
 			      }
               }
 			}
@@ -563,6 +563,98 @@ public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$conn,$dbase
         echo 9; // sin conexion
     }
 
+
+}
+
+
+public function analytics($conn,$dbase){
+
+    echo '<div class="container-fluid">
+            <div class="jumbotron">
+          
+                
+                    
+                    <div class="alert alert-info">
+                        <h4><span class="glyphicon glyphicon-equalizer" aria-hidden="true"></span> Estadísticas sobre Expedientes</h4><hr>
+                    </div>
+                    
+                    <div class="row">
+                        
+                        <div class="col-sm-3">
+                            <div class="well">
+                                <h4>Users</h4>
+                                <p>1 Million</p> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <div class="well">
+                                <h4>Pages</h4>
+                                <p>100 Million</p> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <div class="well">
+                                <h4>Sessions</h4>
+                                <p>10 Million</p> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <div class="well">
+                                <h4>Bounce</h4>
+                                <p>30%</p> 
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="well">
+                                <p>Text</p> 
+                                <p>Text</p> 
+                                <p>Text</p> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="well">
+                                <p>Text</p> 
+                                <p>Text</p> 
+                                <p>Text</p> 
+                            </div>
+                        </div>
+                    
+                        <div class="col-sm-4">
+                            <div class="well">
+                                <p>Text</p> 
+                                <p>Text</p> 
+                                <p>Text</p> 
+                            </div>
+                        </div>
+                    
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="well">
+                                <p>Text</p> 
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                            <div class="well">
+                                <p>Text</p> 
+                            </div>
+                        </div>
+                    </div>
+                
+                
+            
+            </div>
+        </div>';
 
 }
 

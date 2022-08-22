@@ -567,7 +567,50 @@ public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$conn,$dbase
 }
 
 
-public function analytics($conn,$dbase){
+public function analytics($oneExp,$conn,$dbase){
+    
+    mysqli_select_db($conn,$dbase);
+    // SE CALCULA LA TOTALIDAD DE EXPEDIENTES
+    $sql = "select count(*) as cantidad from exp_expedientes";
+    $query = mysqli_query($conn,$sql);
+    $row = mysqli_fetch_array($query);
+    // =============================================================== //
+    
+    //SE CALCULA LA CANTIDAD DE EXPEDIENTES INGRESADOS EN LA ULTIMO SEMANA
+    $sql_1 = "select count(*) as cantidad from exp_expedientes where fecha_ingreso between date_sub(now(), interval 1 week) and now()";
+    $query_1 = mysqli_query($conn,$sql_1);
+    $row_1 = mysqli_fetch_assoc($query_1);
+    // =============================================================== //
+    
+    //SE CALACULA LA CANTIDAD DE EXPEDIENTES INGRESADOS EN EL ULTIMO MES
+    $sql_2 = "select count(*) as cantidad from exp_expedientes where fecha_ingreso between date_sub(now(), interval 1 month) and now()";
+    $query_2 = mysqli_query($conn,$sql_2);
+    $row_2 = mysqli_fetch_assoc($query_2);
+    // =============================================================== //
+    
+    //SE CALACULA LA CANTIDAD DE EXPEDIENTES INGRESADOS EN EL ULTIMO AÑO
+    $sql_3 = "select count(*) as cantidad from exp_expedientes where fecha_ingreso between date_sub(now(), interval 1 year) and now()";
+    $query_3 = mysqli_query($conn,$sql_3);
+    $row_3 = mysqli_fetch_assoc($query_3);
+    // =============================================================== //
+    
+    //SE CALACULA LA CANTIDAD DE EXPEDIENTES AGRUPADOS POR USUARIO RESPONSABLE
+    $sql_4 = "select usuario_responsable, count(*) as cantidad from exp_expedientes group by usuario_responsable ASC";
+    $query_4 = mysqli_query($conn,$sql_4);
+    // =============================================================== //
+    
+    //SE CALACULA LA CANTIDAD DE EXPEDIENTES EN EL AREA
+    $sql_5 = "select count(*) as cantidad from exp_expedientes where fecha_ingreso IS NOT NULL and fecha_egreso IS NULL";
+    $query_5 = mysqli_query($conn,$sql_5);
+    $row_5 = mysqli_fetch_assoc($query_5);
+    // =============================================================== //
+    
+    //SE CALACULA LA CANTIDAD DE EXPEDIENTES ENVIADOS
+    $sql_6 = "select count(*) as cantidad from exp_expedientes where fecha_ingreso IS NOT NULL and fecha_egreso IS NOT NULL";
+    $query_6 = mysqli_query($conn,$sql_6);
+    $row_6 = mysqli_fetch_assoc($query_6);
+    
+
 
     echo '<div class="container-fluid">
             <div class="jumbotron">
@@ -582,57 +625,63 @@ public function analytics($conn,$dbase){
                         
                         <div class="col-sm-3">
                             <div class="well">
-                                <h4>Users</h4>
-                                <p>1 Million</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Total Expedientes</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row['cantidad'].'</span></p> 
                             </div>
                         </div>
                         
                         <div class="col-sm-3">
                             <div class="well">
-                                <h4>Pages</h4>
-                                <p>100 Million</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en la último semana</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row_1['cantidad'].'</span></p> 
                             </div>
                         </div>
                         
                         <div class="col-sm-3">
                             <div class="well">
-                                <h4>Sessions</h4>
-                                <p>10 Million</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en el último mes</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row_2['cantidad'].'</span></p> 
                             </div>
                         </div>
                         
                         <div class="col-sm-3">
                             <div class="well">
-                                <h4>Bounce</h4>
-                                <p>30%</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados el último Año</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row_3['cantidad'].'</span></p>  
                             </div>
                         </div>
                         
                     </div>
                     
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-12">
+                            
                             <div class="well">
-                                <p>Text</p> 
-                                <p>Text</p> 
-                                <p>Text</p> 
-                            </div>
-                        </div>
-                        
-                        <div class="col-sm-4">
-                            <div class="well">
-                                <p>Text</p> 
-                                <p>Text</p> 
-                                <p>Text</p> 
-                            </div>
-                        </div>
-                    
-                        <div class="col-sm-4">
-                            <div class="well">
-                                <p>Text</p> 
-                                <p>Text</p> 
-                                <p>Text</p> 
-                            </div>
+                                <h2>Cantidad de Expedientes por Usuario Reponsable</h2>
+                                
+                                <table class="table table-condensed table-hover" style="width:100%" id="groupByUserTable">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-nowrap text-center">Usuario Responsable</th>
+                                        <th class="text-nowrap text-center">Cantidad</th>
+                                        </thead>
+                                    </tr>
+                                    </thead>
+                                    <tbody>';
+                                    
+                                    while($fila = mysqli_fetch_array($query_4)){
+                                    // Listado normal
+                                    echo "<tr>";
+                                    echo "<td align=center>".$oneExp->getUsuarioResponsable($fila['usuario_responsable'])."</td>";
+                                    echo "<td align=center>".$fila['cantidad']."</td>";
+                                    
+                                    }
+                                    
+                                    echo '</tbody>
+                                          </table>
+                                          </div>
+                            
+                            
                         </div>
                     
                     </div>
@@ -640,13 +689,15 @@ public function analytics($conn,$dbase){
                     <div class="row">
                         <div class="col-sm-8">
                             <div class="well">
-                                <p>Text</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes enviados</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row_6['cantidad'].'</span></p>
                             </div>
                         </div>
                         
                         <div class="col-sm-4">
                             <div class="well">
-                                <p>Text</p> 
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes en el Area</h4>
+                                <p>Cantidad: <span class="label label-default">'.$row_5['cantidad'].'</span></p>
                             </div>
                         </div>
                     </div>

@@ -131,7 +131,7 @@
             $oneExp->formDeleteExpediente($id,$oneExp,$conn,$dbase);
         }
         if(isset($_POST['statistics'])){
-            $oneExp->analytics($conn,$dbase);
+            $oneExp->analytics($oneExp,$conn,$dbase);
         }
         
         

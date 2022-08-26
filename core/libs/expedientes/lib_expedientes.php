@@ -148,7 +148,7 @@ class Expedientes{
                     <button type="submit" class="btn btn-default btn-sm" name="nuevo_ingreso" data-toggle="tooltip" data-placement="top" title="Agregar Ingreso Expediente">
                     <img src="../../icons/actions/list-add.png"  class="img-reponsive img-rounded"> Nuevo Ingreso</button>
                     
-                    <button type="submit" class="btn btn-default btn-sm" name="busqueda_avanzada" data-toggle="tooltip" data-placement="top" title="Búsqueda Avanzada de Expedientes">
+                    <button type="submit" class="btn btn-default btn-sm" name="busquedas_avanzadas" data-toggle="tooltip" data-placement="top" title="Búsqueda Avanzada de Expedientes">
                     <img src="../../icons/actions/system-search.png"  class="img-reponsive img-rounded"> Búsqueda Avanzada</button>
                     
               </form><hr>';
@@ -705,6 +705,172 @@ public function analytics($oneExp,$conn,$dbase){
                 
             
             </div>
+        </div>';
+
+}
+
+
+public function advanceSearch(){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h1><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsquedas Avanzadas</h1>      
+            <p>Seleccione el tipo de búsqueda que desea realizar</p><hr>
+            
+            <form action="#" method="POST">
+            
+            <div class="row">
+                <button type="submit" class="btn btn-default" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Nro. Expediente / Documento</button>
+                <button type="submit" class="btn btn-default" name="search_procedencia"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Procedencia</button>
+                <button type="submit" class="btn btn-default" name="search_responsable"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Usuario Responsable</button>
+            </div><hr>
+            
+            <div class="row">
+                <button type="submit" class="btn btn-default" name="search_fechas"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Fecha Ingreso o Fecha Egreso</button>
+                <button type="submit" class="btn btn-default" name="search_asunto"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Asunto</button>
+            </div>
+            
+            </form>
+            
+            </div>
+                
+        </div>';
+}
+
+
+
+public function searchByExp(){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Nro. Expdiente / Documento</h2><hr>
+            
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Ingrese el Nro. del expdiente exactamente igual a como se encuentra en el Sistema GDE
+            </div>
+                
+            <form action="#" method="POST">
+            
+            <div class="row">
+                
+                <div class="form-group">
+                    <label for="nro_exp">Nro. Expediente / Documento:</label>
+                    <input type="text" class="form-control" id="nro_exp" name="nro_exp">
+                </div>
+                
+                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                
+            </div>
+            
+            </form>
+            
+            </div>
+                
+        </div>';
+
+}
+
+
+public function searchByProcedencia($conn,$dbase){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Procedencia del Documento</h2><hr>
+            
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Seleccione la dependencia proveniente del documento
+            </div>
+                
+            <form action="#" method="POST">
+            
+            <div class="row">
+                
+            <div class="form-group">
+                <label for="procedencia">Procedencia / Remitente</label>
+                <select class="form-control" id="procedencia" name="procedencia" required>
+                <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT cartera, apertura FROM exp_carteras_ministerial group by apertura";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    echo '<option value="'.$valores[apertura].'">'.$valores[cartera].' - '.$valores[apertura].'</option>';
+			      }
+              }
+			}
+
+			  
+		 echo '</select>
+                </div><br>
+                
+                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                
+            </div>
+            
+            </form>
+            
+            </div>
+                
+        </div>';
+
+}
+
+
+public function searchByResponsable($conn,$dbase){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Procedencia del Documento</h2><hr>
+            
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Seleccione la dependencia proveniente del documento
+            </div>
+                
+            <form action="#" method="POST">
+            
+            <div class="row">
+                
+            <div class="form-group">
+            <label for="usuario_responsable">Usuario Responsable</label>
+            <select class="form-control" id="usuario_responsable" name="usuario_responsable" required>
+            <option value="" disabled selected>Seleccionar</option>';
+                
+                if($conn){
+                $query = "SELECT nombre FROM exp_usuarios order by nombre ASC";
+                mysqli_select_db($conn,$dbase);
+                $res = mysqli_query($conn,$query);
+
+                if($res){
+                    while ($valores = mysqli_fetch_array($res)){
+                        if($valores['nombre'] != 'Administrador'){
+                            echo '<option value="'.$valores[nombre].'">'.$valores[nombre].'</option>';
+                        }    
+                    }
+                
+                }
+            }
+                
+
+                mysqli_close($conn);
+            
+            echo '</select>
+                  </div><br>
+                
+                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                
+            </div>
+            
+            </form>
+            
+            </div>
+                
         </div>';
 
 }

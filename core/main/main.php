@@ -133,6 +133,18 @@
         if(isset($_POST['statistics'])){
             $oneExp->analytics($oneExp,$conn,$dbase);
         }
+        if(isset($_POST['busquedas_avanzadas'])){
+            $oneExp->advanceSearch();
+        }
+        if(isset($_POST['search_exp'])){
+            $oneExp->searchByExp();
+        }
+        if(isset($_POST['search_procedencia'])){
+            $oneExp->searchByProcedencia($conn,$dbase);
+        }
+        if(isset($_POST['search_responsable'])){
+            $oneExp->searchByResponsable($conn,$dbase);
+        }
         
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //

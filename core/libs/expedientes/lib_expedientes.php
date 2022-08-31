@@ -187,30 +187,8 @@ public function formIngresoExpediente($conn,$dbase){
             </div>
             
             <div class="form-group">
-            <label for="asunto">Asunto</label>
-            <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Ingrese una breve descripción del tema que trata el expediente" required>
-            </div>';
-		
-		
-		echo '<div class="form-group">
-                <label for="procedencia">Procedencia / Remitente</label>
-                <select class="form-control" id="procedencia" name="procedencia" required>
-                <option value="" disabled selected>Seleccionar</option>';
-		    
-		    if($conn){
-		      $query = "SELECT cartera, apertura FROM exp_carteras_ministerial group by apertura";
-		      mysqli_select_db($conn,$dbase);
-		      $res = mysqli_query($conn,$query);
-
-		      if($res){
-				  while ($valores = mysqli_fetch_array($res)){
-                    echo '<option value="'.$valores[apertura].'">'.$valores[cartera].' - '.$valores[apertura].'</option>';
-			      }
-              }
-			}
-
-			  
-		 echo '</select>
+            <label for="asunto">Procedencia / Remitente</label>
+            <input type="text" class="form-control" id="procedencia" name="procedencia" placeholder="Ingrese la procedencia o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
             </div>
 		
 		 <div class="form-group">
@@ -374,28 +352,12 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
 	        <div class="form-group">
             <label for="fecha_egreso">Fecha Egreso</label>
             <input type="date" class="form-control" id="fecha_egreso" name="fecha_egreso" required>
-            </div>';
+            </div>
 		
-		echo '<div class="form-group">
-                <label for="destino">Destino / Receptor</label>
-                <select class="form-control" id="destino" name="destino" required>
-                <option value="" disabled selected>Seleccionar</option>';
-		    
-		    if($conn){
-		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
-		      mysqli_select_db($conn,$dbase);
-		      $res = mysqli_query($conn,$query);
-
-		      if($res){
-				  while ($valores = mysqli_fetch_array($res)){
-                    echo '<option value="'.$valores[apertura].'" >'.$valores[apertura].'</option>';
-			      }
-              }
-			}
-
-			  
-		 echo '</select>
-            </div><hr>
+            <div class="form-group">
+            <label for="asunto">Destino / Receptor</label>
+            <input type="text" class="form-control" id="destino" name="destino" placeholder="Ingrese el destino o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
+            </div>
 		
 		
 		<button type="submit" class="btn btn-default btn-block" id="update_enviar_expediente">

@@ -261,28 +261,12 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
             <div class="form-group">
             <label for="asunto">Asunto</label>
             <input type="text" class="form-control" id="asunto" name="asunto"  value="'.$oneExp->getAsunto($row['asunto']).'" required>
-            </div>';
-		
-		
-		echo '<div class="form-group">
-                <label for="procedencia">Procedencia / Remitente</label>
-                <select class="form-control" id="procedencia" name="procedencia" required>
-                <option value="" disabled selected>Seleccionar</option>';
-		    
-		    if($conn){
-		      $query = "SELECT apertura FROM exp_carteras_ministerial group by apertura";
-		      mysqli_select_db($conn,$dbase);
-		      $res = mysqli_query($conn,$query);
-
-		      if($res){
-				  while ($valores = mysqli_fetch_array($res)){
-                    echo '<option value="'.$valores[apertura].'" '.("'.$row[procedencia].'" == "'.$valores[apertura].'" ? "selected" : "").'>'.$valores[apertura].'</option>';
-			      }
-              }
-			}
-
-			  
-		 echo '</select>
+            </div>
+            
+            
+            <div class="form-group">
+            <label for="asunto">Procedencia / Remitente</label>
+            <input type="text" class="form-control" id="procedencia" name="procedencia"  value="'.$oneExp->getProcedencia($row['procedencia']).'" required>
             </div>
 		
 		 <div class="form-group">

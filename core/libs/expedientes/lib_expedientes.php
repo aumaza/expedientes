@@ -180,10 +180,15 @@ public function formIngresoExpediente($conn,$dbase){
             <label for="nro_expediente">Número de Expediente</label>
             <input type="text" class="form-control" id="nro_expediente" name="nro_expediente"  placeholder="Ingrese el Número del expediente" required>
             </div>
-	        
+            
 	        <div class="form-group">
             <label for="fecha_ingreso">Fecha Ingreso</label>
             <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input type="text" class="form-control" id="asunto" name="asunto"  placeholder="Ingrese el asunto del Expediente" required>
             </div>
             
             <div class="form-group">

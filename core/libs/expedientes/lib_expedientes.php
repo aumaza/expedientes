@@ -738,29 +738,13 @@ public function searchByProcedencia($conn,$dbase){
             <form action="#" method="POST">
             
             <div class="row">
-                
+            
             <div class="form-group">
-                <label for="procedencia">Procedencia / Remitente</label>
-                <select class="form-control" id="procedencia" name="procedencia" required>
-                <option value="" disabled selected>Seleccionar</option>';
-		    
-		    if($conn){
-		      $query = "SELECT cartera, apertura FROM exp_carteras_ministerial group by apertura";
-		      mysqli_select_db($conn,$dbase);
-		      $res = mysqli_query($conn,$query);
-
-		      if($res){
-				  while ($valores = mysqli_fetch_array($res)){
-                    echo '<option value="'.$valores[apertura].'">'.$valores[cartera].' - '.$valores[apertura].'</option>';
-			      }
-              }
-			}
-
-			  
-		 echo '</select>
-                </div><br>
+            <label for="asunto">Procedencia / Remitente</label>
+            <input type="text" class="form-control" id="procedencia" name="procedencia" placeholder="Ingrese la procedencia o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
+            </div>
                 
-                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
                 
             </div>
             
@@ -778,7 +762,7 @@ public function searchByResponsable($conn,$dbase){
     echo '<div class="container">
 
             <div class="jumbotron">
-            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Procedencia del Documento</h2><hr>
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Usuario Responsable</h2><hr>
             
             <div class="alert alert-info">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Seleccione la dependencia proveniente del documento
@@ -815,6 +799,82 @@ public function searchByResponsable($conn,$dbase){
                   </div><br>
                 
                 <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                
+            </div>
+            
+            </form>
+            
+            </div>
+                
+        </div>';
+
+}
+
+
+public function searchByFecha($conn,$dbase){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Fecha de Ingreso</h2><hr>
+            
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Seleccione la fehca en la que ingresó el documento
+            </div>
+                
+            <form action="#" method="POST">
+            
+            <div class="row">
+            
+            <div class="form-group">
+            <label for="fecha_ingreso">Seleccione la Fecha</label>
+            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+            </div><br>
+            
+            <h2>Seleccione el Tipo de Fecha</h2>
+            
+            <label class="checkbox-inline">
+                <input type="checkbox" name="tipo_fecha" value="1">Fecha Ingreso
+            </label>
+            
+            <label class="checkbox-inline">
+                <input type="checkbox" name="tipo_fecha" value="2">Fecha Egreso
+            </label><br><br><br>
+                
+            <button type="submit" class="btn btn-default btn-block" name="search_by_fechas"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                
+            </div>
+            
+            </form>
+            
+            </div>
+                
+        </div>';
+
+}
+
+
+public function searchByAsunto($conn,$dbase){
+
+    echo '<div class="container">
+
+            <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Búsqueda por Fecha de Ingreso</h2><hr>
+            
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <strong>Importante!</strong> Ingrese el asunto sobre el que trata el documento
+            </div>
+                
+            <form action="#" method="POST">
+            
+            <div class="row">
+            
+            <div class="form-group">
+            <label for="fecha_ingreso">Ingrese el asunto</label>
+            <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Ingrese el asunto sobre el que trata la documentación" required>
+            </div>
+                
+            <button type="submit" class="btn btn-default btn-block" name="search_asunto"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
                 
             </div>
             

@@ -145,6 +145,12 @@
         if(isset($_POST['search_responsable'])){
             $oneExp->searchByResponsable($conn,$dbase);
         }
+        if(isset($_POST['search_fechas'])){
+            $oneExp->searchByFecha($conn,$dbase);
+        }
+        if(isset($_POST['search_asunto'])){
+            $oneExp->searchByAsunto($conn,$dbase);
+        }
         
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //

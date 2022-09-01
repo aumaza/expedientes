@@ -831,15 +831,14 @@ public function searchByFecha($conn,$dbase){
             <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
             </div><br>
             
-            <h2>Seleccione el Tipo de Fecha</h2>
-            
-            <label class="checkbox-inline">
-                <input type="checkbox" name="tipo_fecha" value="1">Fecha Ingreso
-            </label>
-            
-            <label class="checkbox-inline">
-                <input type="checkbox" name="tipo_fecha" value="2">Fecha Egreso
-            </label><br><br><br>
+            <div class="form-group">
+            <label for="tipo_fecha">Tipo Fecha:</label>
+            <select class="form-control" id="tipo_fecha" name="tipo_fecha">
+                <option value="" selected disabled>Seleccionar</option>
+                <option value="1">Fecha Ingreso</option>
+                <option value="2">Fecha Egreso</option>
+            </select>
+            </div><br>
                 
             <button type="submit" class="btn btn-default btn-block" name="search_by_fechas"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
                 

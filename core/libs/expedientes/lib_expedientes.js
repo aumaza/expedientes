@@ -173,6 +173,47 @@ $(document).ready(function(){
 
 
 /*
+** editar registro
+*/
+$(document).ready(function(){
+    $('#update_egreso').click(function(){
+        var datos=$('#fr_update_expediente_egreso_ajax').serialize();
+        $.ajax({
+            type:"POST",
+            url:"../libs/expedientes/update_egreso.php",
+            data:datos,
+            success:function(r){
+                if(r==1){
+                    alert("Registro Actualizado Exitosamente!!");
+                    window.location.href="main.php";
+                }else if(r==-1){
+                    alert("Hubo un problema al intentar Actualizar el Ingreso");
+                    console.log("Datos: " + datos);
+                }else if(r == 2){
+                    alert("Hay campos en los cuales ingresó caracteres no válidos");
+                    console.log("Datos: " + datos);
+                }else if(r == 3){
+                    alert("No ha ingresado datos aún!!");
+                    console.log("Datos: " + datos);
+                }
+                else if(r == 7){
+                    alert("No hay Conexion a la base de datos");
+                    console.log("Datos: " + datos);
+                }
+                else if(r == 9){
+                    alert('Sin Conexion en la función principal');
+                }
+                
+                
+            }
+        });
+
+        return false;
+    });
+});
+
+
+/*
 ** actualizar enviar registro
 */
 $(document).ready(function(){

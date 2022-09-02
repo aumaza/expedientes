@@ -1,5 +1,5 @@
 <?php session_start(); 
-      ini_set('display_errors', 0);
+      ini_set('display_errors', 1);
       include "../../connection/connection.php";
       include "../libs/lib_core.php";
       include "../libs/lib_main.php";
@@ -125,6 +125,10 @@
         if(isset($_POST['salida_exp'])){
             $id = mysqli_real_escape_string($conn,$_POST['id']);
             $oneExp->formEnviarExpediente($oneExp,$id,$conn,$dbase);
+        }
+        if(isset($_POST['edit_egreso'])){
+            $id = mysqli_real_escape_string($conn,$_POST['id']);
+            $oneExp->formEditarEgreso($oneExp,$id,$conn,$dbase);
         }
         if(isset($_POST['delete_expediente'])){
             $id = mysqli_real_escape_string($conn,$_POST['id']);

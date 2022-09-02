@@ -11,15 +11,17 @@
             $asunto = mysqli_real_escape_string($conn,$_POST['asunto']);
             $procedencia = mysqli_real_escape_string($conn,$_POST['procedencia']);
             $usuario_responsable = mysqli_real_escape_string($conn,$_POST['usuario_responsable']);
+            $desc_ingreso = mysqli_real_escape_string($conn,$_POST['desc_ingreso']);
             
             if((nro_expediente == '') ||
                 ($fecha_ingreso == '') ||
                     ($asunto == '') ||
                         ($procedencia == '') ||
-                            ($usuario_responsable == '')){
+                            ($usuario_responsable == '') ||
+                                ($desc_ingreso == '')){
                                 echo 3; // hay campos sin completar
             }else{
-                $oneExp->addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$conn,$dbase);
+                $oneExp->addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$desc_ingreso,$conn,$dbase);
             }
         }else{
             echo 7; // sin conexion

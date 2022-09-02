@@ -7,9 +7,11 @@ class Expedientes{
     private $fecha_ingreso = '';
     private $asunto = '';
     private $procedencia = '';
+    private $desc_ingreso = '';
     private $usuario_responsable = '';
     private $fecha_egreso = '';
     private $destino = '';
+    private $desc_egreso = '';
 
     // CONSTRUCTOR DESPARAMETRIZADO
     private function __constructor(){
@@ -17,9 +19,11 @@ class Expedientes{
         $this->fecha_ingreso = '';
         $this->asunto = '';
         $this->procedencia = '';
+        $thi->desc_ingreso = '';
         $this->usuario_responsable = '';
         $this->fecha_egreso = '';
         $this->destino = '';
+        $this->desc_egreso = '';
     }
     
     // SETTERS
@@ -39,6 +43,10 @@ class Expedientes{
         $this->procedencia = $var;
     }
     
+    private function setDescIngreso($var){
+        $this->desc_ingreso = $var;
+    }
+    
     private function setUsuarioResponsable($var){
         $this->usuario_responsable = $var;
     }
@@ -49,6 +57,10 @@ class Expedientes{
     
     private function setDestino($var){
         $this->destino = $var;
+    }
+    
+    private function setDescEgreso($var){
+        $this->desc_egreso = $var;
     }
     
     //GETTERS
@@ -68,6 +80,10 @@ class Expedientes{
         return $this->procedencia = $var;
     }
     
+    private function getDescIngreso($var){
+        return $this->desc_ingreso = $var;
+    }
+    
     private function getUsuarioResponsable($var){
         return $this->usuario_responsable = $var;
     }
@@ -78,6 +94,10 @@ class Expedientes{
     
     private function getDestino($var){
         return $this->destino = $var;
+    }
+    
+    private function getDescEgreso($var){
+        return $this->desc_egreso = $var;
     }
 
     // METODOS
@@ -101,9 +121,11 @@ class Expedientes{
                     <th class='text-nowrap text-center'>Fecha Ingreso</th>
                     <th class='text-nowrap text-center'>Asunto</th>
                     <th class='text-nowrap text-center'>Procedencia</th>
+                    <th class='text-nowrap text-center'>Descripción Ingreso</th>
                     <th class='text-nowrap text-center'>Usuario Responsable</th>
                     <th class='text-nowrap text-center'>Fecha Egreso</th>
                     <th class='text-nowrap text-center'>Destino</th>
+                    <th class='text-nowrap text-center'>Descripción Egreso</th>
                     <th class='text-nowrap text-center'>Acciones</th>
                     </thead>";
 
@@ -115,23 +137,28 @@ class Expedientes{
                     echo "<td align=center>".$oneExp->getFechaIngreso($fila['fecha_ingreso'])."</td>";
                     echo "<td align=center>".$oneExp->getAsunto($fila['asunto'])."</td>";
                     echo "<td align=center>".$oneExp->getProcedencia($fila['procedencia'])."</td>";
+                    echo "<td align=center>".$oneExp->getDescIngreso($fila['desc_ingreso'])."</td>";
                     echo "<td align=center>".$oneExp->getUsuarioResponsable($fila['usuario_responsable'])."</td>";
                     echo "<td align=center>".$oneExp->getFechaEgreso($fila['fecha_egreso'])."</td>";
                     echo "<td align=center>".$oneExp->getDestino($fila['destino'])."</td>";
+                    echo "<td align=center>".$oneExp->getDescEgreso($fila['desc_egreso'])."</td>";
                     echo "<td class='text-nowrap'>";
                     
                     echo '<form action="#" method="POST">
                             <input type="hidden" id="id" name="id" value="'.$fila['id'].'">';
                         
                         if($oneExp->getFechaEgreso($fila['fecha_egreso']) == ''){
-                           echo '<button type="submit" class="btn btn-info btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="left" title="Editar Datos del Expediente">
+                           echo '<button type="submit" class="btn btn-default btn-sm" name="edit_exp" data-toggle="tooltip" data-placement="left" title="Editar Datos del Expediente">
                                 <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar</button>
                                 
-                           <button type="submit" class="btn btn-danger btn-sm" name="delete_expediente" data-toggle="tooltip" data-placement="left" title="Eliminar Registro">
+                           <button type="submit" class="btn btn-default btn-sm" name="delete_expediente" data-toggle="tooltip" data-placement="left" title="Eliminar Registro">
                                 <img src="../../icons/actions/trash-empty.png"  class="img-reponsive img-rounded"> Borrar</button>
                             
                             <button type="submit" class="btn btn-default btn-sm" name="salida_exp" data-toggle="tooltip" data-placement="left" title="Envió de Expediente">
                                 <img src="../../icons/actions/mail-forward.png"  class="img-reponsive img-rounded"> Envío</button>';
+                        }else{
+                            echo '<button type="submit" class="btn btn-default btn-sm btn-block" name="edit_egreso" data-toggle="tooltip" data-placement="left" title="Editar Datos de Egreso">
+                                <img src="../../icons/actions/document-edit.png"  class="img-reponsive img-rounded"> Editar Egreso</button>';                            
                         }
                         
                             
@@ -218,7 +245,13 @@ public function formIngresoExpediente($conn,$dbase){
 			mysqli_close($conn);
 		  
 		 echo '</select>
-		</div><hr>
+		</div>
+		
+		<div class="form-group">
+            <label for="desc_ingreso">Descripción Ingreso:</label>
+            <textarea class="form-control" rows="5" id="desc_ingreso" name="desc_ingreso" placeholder="Ingrese una breve descripción del o los motivos a tratar por el docuemnto"></textarea>
+        </div>
+		<hr>
 		
 		
 		<button type="submit" class="btn btn-default btn-block" id="add_nuevo_expediente">
@@ -236,7 +269,7 @@ public function formIngresoExpediente($conn,$dbase){
 
 
 /*
-** FORMULARIO DE ALTA
+** FORMULARIO DE EDICION DE INGRESO
 */
 public function formEditarExpediente($oneExp,$id,$conn,$dbase){
         
@@ -296,11 +329,98 @@ public function formEditarExpediente($oneExp,$id,$conn,$dbase){
 			mysqli_close($conn);
 		  
 		 echo '</select>
-		</div><hr>
+		</div>
+		
+		<div class="form-group">
+            <label for="desc_ingreso">Descripción Ingreso:</label>
+            <textarea class="form-control" rows="5" id="desc_ingreso" name="desc_ingreso" placeholder="Ingrese una breve descripción del o los motivos a tratar por el docuemnto">'.$oneExp->getDescIngreso($row['desc_ingreso']).'</textarea>
+        </div>
+		<hr>
 		
 		
 		<button type="submit" class="btn btn-default btn-block" id="update_expediente">
             <img src="../../icons/actions/view-refresh.png"  class="img-reponsive img-rounded"> Actualizar</button>
+	      </form> <hr>
+	      
+	    </div>
+	    </div>
+	</div></div>';
+
+} // FIN DE LA FUNCION
+
+
+/*
+** FORMULARIO DE EDICION DE EGRESO
+*/
+public function formEditarEgreso($oneExp,$id,$conn,$dbase){
+        
+      $sql = "select * from exp_expedientes where id = '$id'";
+      mysqli_select_db($conn,$dbase);
+      $query = mysqli_query($conn,$sql);
+      $row = mysqli_fetch_assoc($query);
+
+      echo '<div class="container">
+        <div class="jumbotron">
+	    <div class="row">
+	    <div class="col-sm-12">
+	      <h2><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Editar Datos de Egreso Expediente</h2><hr>
+	        <form id="fr_update_expediente_egreso_ajax" method="POST">
+	        <input type="hidden" id="id" name="id" value="'.$id.'">
+	        
+	        <div class="form-group">
+            <label for="nro_expediente">Número de Expediente</label>
+            <input type="text" class="form-control" id="nro_expediente" name="nro_expediente" value="'.$oneExp->getNroExpediente($row['nro_exp']).'" disabled required>
+            </div>
+	        
+	        <div class="form-group">
+            <label for="fecha_ingreso">Fecha Egreso</label>
+            <input type="date" class="form-control" id="fecha_egreso" name="fecha_egreso"  value="'.$oneExp->getFechaEgreso($row['fecha_egreso']).'" required>
+            </div>
+            
+            <div class="form-group">
+            <label for="asunto">Asunto</label>
+            <input type="text" class="form-control" id="asunto" name="asunto"  value="'.$oneExp->getAsunto($row['asunto']).'" disabled required>
+            </div>
+            
+            
+            <div class="form-group">
+            <label for="destino">Destino</label>
+            <input type="text" class="form-control" id="destino" name="destino"  value="'.$oneExp->getDestino($row['destino']).'" required>
+            </div>
+		
+		 <div class="form-group">
+		  <label for="usuario_responsable">Usuario Responsable</label>
+		  <select class="form-control" id="usuario_responsable" name="usuario_responsable"asunto required>
+		  <option value="" disabled selected>Seleccionar</option>';
+		    
+		    if($conn){
+		      $query = "SELECT nombre FROM exp_usuarios order by nombre ASC";
+		      mysqli_select_db($conn,$dbase);
+		      $res = mysqli_query($conn,$query);
+
+		      if($res){
+				  while ($valores = mysqli_fetch_array($res)){
+                    if($valores['nombre'] != 'Administrador'){
+                        echo '<option value="'.$valores[nombre].'" '.("'.$row[usuario_responsable].'" == "'.$valores[nombre].'" ? "selected" : "").'>'.$valores[nombre].'</option>';
+                    }    
+                  }
+              }
+			}
+
+			mysqli_close($conn);
+		  
+		 echo '</select>
+		</div>
+		
+		<div class="form-group">
+            <label for="desc_egreso">Descripción Egreso:</label>
+            <textarea class="form-control" rows="5" id="desc_egreso" name="desc_egreso" placeholder="Ingrese una breve descripción del o los motivos a tratar por el documento">'.$oneExp->getDescEgreso($row['desc_egreso']).'</textarea>
+        </div>
+		<hr>
+		
+		
+		<button type="submit" class="btn btn-default btn-block" id="update_egreso">
+            <img src="../../icons/actions/view-refresh.png"  class="img-reponsive img-rounded"> Actualizar Egreso</button>
 	      </form> <hr>
 	      
 	    </div>
@@ -347,6 +467,12 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
             <label for="asunto">Destino / Receptor</label>
             <input type="text" class="form-control" id="destino" name="destino" placeholder="Ingrese el destino o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
             </div>
+            
+            <div class="form-group">
+            <label for="desc_egreso">Descripción Egreso:</label>
+            <textarea class="form-control" rows="5" id="desc_egreso" name="desc_egreso" placeholder="Ingrese una breve descripción del o los motivos del envio del documento"></textarea>
+            </div>
+            <hr>
 		
 		
 		<button type="submit" class="btn btn-default btn-block" id="update_enviar_expediente">
@@ -415,7 +541,8 @@ public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asu
                   fecha_ingreso,
                   asunto,
                   procedencia,
-                  usuario_responsable
+                  usuario_responsable,
+                  desc_ingreso
                   )".
                 "VALUES ".
                 "(
@@ -423,7 +550,8 @@ public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asu
                   $oneExp->setFechaIngreso('$fecha_ingreso'),
                   $oneExp->setAsunto('$asunto'),
                   $oneExp->setProcedencia('$procedencia'),
-                  $oneExp->setUsuarioResponsable('$usuario_responsable')
+                  $oneExp->setUsuarioResponsable('$usuario_responsable'),
+                  $oneExp->setDescIngreso('$desc_ingreso')
                   )";
         
         mysqli_select_db($conn,$dbase);
@@ -441,7 +569,7 @@ public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asu
 } // FIN DE LA FUNCION
 
 
-public function updateIngresoExpediente($oneExp,$id,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$conn,$dbase){
+public function updateIngresoExpediente($oneExp,$id,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$desc_ingreso,$conn,$dbase){
 
     if($conn){
         
@@ -450,7 +578,8 @@ public function updateIngresoExpediente($oneExp,$id,$nro_expediente,$fecha_ingre
                 fecha_ingreso = $oneExp->setFechaIngreso('$fecha_ingreso'),
                 asunto = $oneExp->setAsunto('$asunto'),
                 procedencia = $oneExp->setProcedencia('$procedencia'),
-                usuario_responsable = $oneExp->setUsuarioResponsable('$usuario_responsable')
+                usuario_responsable = $oneExp->setUsuarioResponsable('$usuario_responsable'),
+                desc_ingreso = $oneExp->setDescIngreso('$desc_ingreso')
                 where id = '$id'";
         
         $query = mysqli_query($conn,$sql);
@@ -468,6 +597,33 @@ public function updateIngresoExpediente($oneExp,$id,$nro_expediente,$fecha_ingre
 
 } // FIN DE LA FUNCION
 
+
+
+public function updateEgresoExpediente($oneExp,$id,$fecha_egreso,$destino,$usuario_responsable,$desc_egreso,$conn,$dbase){
+
+    if($conn){
+        
+        $sql = "update exp_expedientes set
+                fecha_egreso = $oneExp->setFechaEgreso('$fecha_egreso'),
+                destino = $oneExp->setDestino('$destino'),
+                usuario_responsable = $oneExp->setUsuarioResponsable('$usuario_responsable'),
+                desc_egreso = $oneExp->setDescEgreso('$desc_egreso')
+                where id = '$id'";
+        
+        $query = mysqli_query($conn,$sql);
+        mysqli_select_db($conn,$dbase);
+        
+        if($query){
+            echo 1; // actualizacion exitosa
+        }else{
+            echo -1; // hubo un problema al intentar Actualizar el registro
+        }
+    
+    }else{
+        echo 9; // no hay conexion
+    }
+
+} // FIN DE LA FUNCION
 
 public function deleteRegistroExpediente($id,$conn,$dbase){
 
@@ -490,13 +646,14 @@ public function deleteRegistroExpediente($id,$conn,$dbase){
 } // FIN DE LA FUNCION
 
 
-public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$conn,$dbase){
+public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$desc_egreso,$conn,$dbase){
 
     if($conn){
     
         $sql = "update exp_expedientes set
                 fecha_egreso = $oneExp->setFechaEgreso('$fecha_egreso'),
-                destino = $oneExp->setDestino('$destino')
+                destino = $oneExp->setDestino('$destino'),
+                desc_egreso = $oneExp->setDescEgreso('$desc_egreso')
                 where id = '$id'";
         
         $query = mysqli_query($conn,$sql);
@@ -583,7 +740,7 @@ public function analytics($oneExp,$conn,$dbase){
                         
                         <div class="col-sm-3">
                             <div class="well">
-                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en la último semana</h4>
+                                <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en la última semana</h4>
                                 <p>Cantidad: <span class="label label-default">'.$row_1['cantidad'].'</span></p> 
                             </div>
                         </div>

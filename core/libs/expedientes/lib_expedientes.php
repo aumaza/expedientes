@@ -19,7 +19,7 @@ class Expedientes{
         $this->fecha_ingreso = '';
         $this->asunto = '';
         $this->procedencia = '';
-        $thi->desc_ingreso = '';
+        $this->desc_ingreso = '';
         $this->usuario_responsable = '';
         $this->fecha_egreso = '';
         $this->destino = '';
@@ -464,7 +464,7 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
             </div>
 		
             <div class="form-group">
-            <label for="asunto">Destino / Receptor</label>
+            <label for="destino">Destino / Receptor</label>
             <input type="text" class="form-control" id="destino" name="destino" placeholder="Ingrese el destino o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
             </div>
             
@@ -477,11 +477,12 @@ public function formEnviarExpediente($oneExp,$id,$conn,$dbase){
 		
 		<button type="submit" class="btn btn-default btn-block" id="update_enviar_expediente">
             <span class="glyphicon glyphicon-share" aria-hidden="true"></span> Enviar</button>
-	      </form> <hr>
+	      </form>
 	      
 	    </div>
 	    </div>
-	</div></div>';
+        </div>
+        </div>';
 
 } // FIN DE LA FUNCION
 
@@ -531,7 +532,7 @@ public function formDeleteExpediente($id,$oneExp,$conn,$dbase){
 
 
 
-public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$conn,$dbase){
+public function addIngresoExpediente($oneExp,$nro_expediente,$fecha_ingreso,$asunto,$procedencia,$usuario_responsable,$desc_ingreso,$conn,$dbase){
 
     if($conn){
 
@@ -649,7 +650,8 @@ public function deleteRegistroExpediente($id,$conn,$dbase){
 public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$desc_egreso,$conn,$dbase){
 
     if($conn){
-    
+       
+        mysqli_select_db($conn,$dbase);
         $sql = "update exp_expedientes set
                 fecha_egreso = $oneExp->setFechaEgreso('$fecha_egreso'),
                 destino = $oneExp->setDestino('$destino'),
@@ -657,7 +659,7 @@ public function enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$desc_egreso
                 where id = '$id'";
         
         $query = mysqli_query($conn,$sql);
-        mysqli_select_db($conn,$dbase);
+        
         
         if($query){
             echo 1; // actualizacion exitosa

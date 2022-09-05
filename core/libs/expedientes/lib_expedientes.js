@@ -224,10 +224,10 @@ $(document).ready(function(){
             url:"../libs/expedientes/enviar_expediente.php",
             data:datos,
             success:function(r){
-                if(r==1){
+                if(r == 1){
                     alert("Registro Actualizado Exitosamente!!");
                     window.location.href="main.php";
-                }else if(r==-1){
+                }else if(r == -1){
                     alert("Hubo un problema al intentar Actualizar el Ingreso");
                     console.log("Datos: " + datos);
                 }else if(r == 2){

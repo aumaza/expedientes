@@ -11,10 +11,10 @@
             $destino = mysqli_real_escape_string($conn,$_POST['destino']);
             $desc_egreso = mysqli_real_escape_string($conn.$_POST['desc_egreso']);
             
-            if((id == '') ||
-               ($fecha_egreso == '') ||
-                    ($destino == '') ||
-                        ($desc_egreso == '')){
+            if(($id == '') ||
+                    ($fecha_egreso == '') ||
+                        ($destino == '') ||
+                            ($desc_egreso == '')){
                                 echo 3; // hay campos sin completar
             }else{
                 $oneExp->enviarExpediente($oneExp,$id,$fecha_egreso,$destino,$desc_egreso,$conn,$dbase);

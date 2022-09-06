@@ -9,7 +9,7 @@
             $id = mysqli_real_escape_string($conn,$_POST['id']);
             $fecha_egreso = mysqli_real_escape_string($conn,$_POST['fecha_egreso']);
             $destino = mysqli_real_escape_string($conn,$_POST['destino']);
-            $desc_egreso = mysqli_real_escape_string($conn.$_POST['desc_egreso']);
+            $desc_egreso = mysqli_real_escape_string($conn,$_POST['desc_egreso']);
             
             if(($id == '') ||
                     ($fecha_egreso == '') ||

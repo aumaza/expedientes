@@ -1,5 +1,5 @@
 <?php session_start(); 
-      ini_set('display_errors', 0);
+      ini_set('display_errors', 1);
       include "../../connection/connection.php";
       include "../libs/lib_core.php";
       include "../libs/lib_main.php";
@@ -112,10 +112,14 @@
         // creamos el objeto expediente
         $oneExp = new Expedientes();
         
-        if((isset($_POST['expedientes'])) || (isset($_POST['search_by_nro_exp'])) || (isset($_POST['search_by_procedencia']))){
+        if((isset($_POST['expedientes'])) || (isset($_POST['search_by_nro_exp'])) || (isset($_POST['search_by_procedencia'])) || (isset($_POST['search_usuario_responsable'])) || (isset($_POST['search_by_fechas'])) || (isset($_POST['search_by_asunto']))){
             $nro_exp = mysqli_real_escape_string($conn,$_POST['nro_exp']);
             $procedencia = mysqli_real_escape_string($conn,$_POST['procedencia']);
-            $oneExp->listarExpedientes($oneExp,$nro_exp,$procedencia,$conn,$dbase);
+            $usuario_responsable = mysqli_real_escape_string($conn,$_POST['usuario_responsable']);
+            $fecha = mysqli_real_escape_string($conn,$_POST['fecha']);
+            $tipo_fecha = mysqli_real_escape_string($conn,$_POST['tipo_fecha']);
+            $asunto = mysqli_real_escape_string($conn,$_POST['asunto']);
+            $oneExp->listarExpedientes($oneExp,$nro_exp,$procedencia,$usuario_responsable,$fecha,$tipo_fecha,$asunto,$conn,$dbase);
         }
         if(isset($_POST['nuevo_ingreso'])){
             $oneExp->formIngresoExpediente($conn,$dbase);
@@ -152,10 +156,10 @@
             $oneExp->searchByResponsable($conn,$dbase);
         }
         if(isset($_POST['search_fechas'])){
-            $oneExp->searchByFecha($conn,$dbase);
+            $oneExp->searchByFecha();
         }
         if(isset($_POST['search_asunto'])){
-            $oneExp->searchByAsunto($conn,$dbase);
+            $oneExp->searchByAsunto();
         }
         
         

@@ -102,11 +102,11 @@ class Expedientes{
 
     // METODOS
     
-    public function listarExpedientes($oneExp,$nro_exp,$procedencia,$conn,$dbase){
+    public function listarExpedientes($oneExp,$nro_exp,$procedencia,$usuario_responsable,$fecha,$tipo_fecha,$asunto,$conn,$dbase){
 
         if($conn){
             
-            if(($nro_exp == '') || ($procedencia == '')){
+            if(($nro_exp == '') || ($procedencia == '') || ($usuario_responsable == '') || ($fecha == '') || ($asunto == '')){
 
                 $sql = "SELECT * FROM exp_expedientes";
                 mysqli_select_db($conn,$dbase);
@@ -123,6 +123,30 @@ class Expedientes{
             if($procedencia != ''){
 
                 $sql = "SELECT * FROM exp_expedientes where procedencia = '$procedencia'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+            }
+            if($usuario_responsable != ''){
+
+                $sql = "SELECT * FROM exp_expedientes where usuario_responsable = '$usuario_responsable'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+            }
+            if(($fecha != '') && ($tipo_fecha == '1')){
+
+                $sql = "SELECT * FROM exp_expedientes where fecha_ingreso = '$fecha'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+            }
+            if(($fecha != '') && ($tipo_fecha == '2')){
+
+                $sql = "SELECT * FROM exp_expedientes where fecha_egreso = '$fecha'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+            }
+            if($asunto != ''){
+
+                $sql = "SELECT * FROM exp_expedientes where asunto = '$asunto'";
                 mysqli_select_db($conn,$dbase);
                 $resultado = mysqli_query($conn,$sql);
             }
@@ -976,7 +1000,8 @@ public function searchByResponsable($conn,$dbase){
             echo '</select>
                   </div><br>
                 
-                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                <button type="submit" class="btn btn-default btn-block" name="search_usuario_responsable"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
                 
             </div>
             
@@ -989,7 +1014,7 @@ public function searchByResponsable($conn,$dbase){
 }
 
 
-public function searchByFecha($conn,$dbase){
+public function searchByFecha(){
 
     echo '<div class="container">
 
@@ -1006,7 +1031,7 @@ public function searchByFecha($conn,$dbase){
             
             <div class="form-group">
             <label for="fecha_ingreso">Seleccione la Fecha</label>
-            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" required>
+            <input type="date" class="form-control" id="fecha" name="fecha" required>
             </div><br>
             
             <div class="form-group">
@@ -1019,6 +1044,7 @@ public function searchByFecha($conn,$dbase){
             </div><br>
                 
             <button type="submit" class="btn btn-default btn-block" name="search_by_fechas"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
                 
             </div>
             
@@ -1031,7 +1057,7 @@ public function searchByFecha($conn,$dbase){
 }
 
 
-public function searchByAsunto($conn,$dbase){
+public function searchByAsunto(){
 
     echo '<div class="container">
 
@@ -1051,7 +1077,8 @@ public function searchByAsunto($conn,$dbase){
             <input type="text" class="form-control" id="asunto" name="asunto" placeholder="Ingrese el asunto sobre el que trata la documentación" required>
             </div>
                 
-            <button type="submit" class="btn btn-default btn-block" name="search_asunto"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="search_by_asunto"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
                 
             </div>
             

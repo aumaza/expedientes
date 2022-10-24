@@ -2,7 +2,8 @@
 
 // DATOS DE CONEXION LOCALHOST
 
-$dbhost = 'slackzone.ddns.net';
+//$dbhost = 'slackzone.ddns.net';
+$dbhost = 'localhost';
 $dbuser = 'root';
 $dbpass = 'slack142';
 $dbase = 'gnu_expedientes';

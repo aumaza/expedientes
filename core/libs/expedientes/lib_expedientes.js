@@ -243,6 +243,8 @@ $(document).ready(function(){
                 }
                 else if(r == 9){
                     alert('Sin Conexion en la función principal');
+                }else if(r == 10){
+                    alert("Estoy Aca");
                 }
                 
                 

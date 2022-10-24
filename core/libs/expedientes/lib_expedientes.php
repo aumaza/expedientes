@@ -102,13 +102,30 @@ class Expedientes{
 
     // METODOS
     
-    public function listarExpedientes($oneExp,$conn,$dbase){
+    public function listarExpedientes($oneExp,$nro_exp,$procedencia,$conn,$dbase){
 
         if($conn){
-        
-            $sql = "SELECT * FROM exp_expedientes";
+            
+            if(($nro_exp == '') || ($procedencia == '')){
+
+                $sql = "SELECT * FROM exp_expedientes";
                 mysqli_select_db($conn,$dbase);
                 $resultado = mysqli_query($conn,$sql);
+
+            }
+            if($nro_exp != ''){
+
+                $sql = "SELECT * FROM exp_expedientes where nro_exp = '$nro_exp'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+
+            }
+            if($procedencia != ''){
+
+                $sql = "SELECT * FROM exp_expedientes where procedencia = '$procedencia'";
+                mysqli_select_db($conn,$dbase);
+                $resultado = mysqli_query($conn,$sql);
+            }
             //mostramos fila x fila
             $count = 0;
             echo '<div class="container-fluid">
@@ -870,7 +887,8 @@ public function searchByExp(){
                     <input type="text" class="form-control" id="nro_exp" name="nro_exp">
                 </div>
                 
-                <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                <button type="submit" class="btn btn-default btn-block" name="search_by_nro_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+                <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
                 
             </div>
             
@@ -900,10 +918,11 @@ public function searchByProcedencia($conn,$dbase){
             
             <div class="form-group">
             <label for="asunto">Procedencia / Remitente</label>
-            <input type="text" class="form-control" id="procedencia" name="procedencia" placeholder="Ingrese la procedencia o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" required>
+            <input type="text" class="form-control" id="procedencia" name="procedencia" placeholder="Ingrese la procedencia o el remitente del documento. Ej. Organismo - Area /  Dirección - Funcionario" >
             </div>
                 
-            <button type="submit" class="btn btn-default btn-block" name="search_exp"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="search_by_procedencia"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar</button>
+            <button type="submit" class="btn btn-default btn-block" name="expedientes"><span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span> Volver a Expedientes</button>
                 
             </div>
             

@@ -112,8 +112,10 @@
         // creamos el objeto expediente
         $oneExp = new Expedientes();
         
-        if(isset($_POST['expedientes'])){
-            $oneExp->listarExpedientes($oneExp,$conn,$dbase);
+        if((isset($_POST['expedientes'])) || (isset($_POST['search_by_nro_exp'])) || (isset($_POST['search_by_procedencia']))){
+            $nro_exp = mysqli_real_escape_string($conn,$_POST['nro_exp']);
+            $procedencia = mysqli_real_escape_string($conn,$_POST['procedencia']);
+            $oneExp->listarExpedientes($oneExp,$nro_exp,$procedencia,$conn,$dbase);
         }
         if(isset($_POST['nuevo_ingreso'])){
             $oneExp->formIngresoExpediente($conn,$dbase);

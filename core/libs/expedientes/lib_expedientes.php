@@ -784,21 +784,24 @@ public function analytics($oneExp,$conn,$dbase){
                         <div class="col-sm-3">
                             <div class="well">
                                 <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en la última semana</h4>
-                                <p>Cantidad: <span class="label label-default">'.$row_1['cantidad'].'</span></p> 
+                                <p>Cantidad: <span class="label label-default">'.$row_1['cantidad'].'</span></p>
+                                <a href="../libs/informes/print.php?file=print_info_last_week.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br> 
                             </div>
                         </div>
                         
                         <div class="col-sm-3">
                             <div class="well">
                                 <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados en el último mes</h4>
-                                <p>Cantidad: <span class="label label-default">'.$row_2['cantidad'].'</span></p> 
+                                <p>Cantidad: <span class="label label-default">'.$row_2['cantidad'].'</span></p>
+                                <a href="../libs/informes/print.php?file=print_info_exp_last_month.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br>
                             </div>
                         </div>
                         
                         <div class="col-sm-3">
                             <div class="well">
                                 <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes ingresados el último Año</h4>
-                                <p>Cantidad: <span class="label label-default">'.$row_3['cantidad'].'</span></p>  
+                                <p>Cantidad: <span class="label label-default">'.$row_3['cantidad'].'</span></p>
+                                <a href="../libs/informes/print.php?file=print_info_last_year.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br>
                             </div>
                         </div>
                         
@@ -830,6 +833,7 @@ public function analytics($oneExp,$conn,$dbase){
                                     
                                     echo '</tbody>
                                           </table>
+                                          <a href="../libs/informes/print.php?file=print_info_exp_by_user.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br>
                                           </div>
                             
                             
@@ -842,6 +846,7 @@ public function analytics($oneExp,$conn,$dbase){
                             <div class="well">
                                 <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes enviados</h4>
                                 <p>Cantidad: <span class="label label-default">'.$row_6['cantidad'].'</span></p>
+                                <a href="../libs/informes/print.php?file=print_info_exp_send.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br>
                             </div>
                         </div>
                         
@@ -849,6 +854,7 @@ public function analytics($oneExp,$conn,$dbase){
                             <div class="well">
                                 <h4><span class="glyphicon glyphicon-th" aria-hidden="true"></span> Expedientes en el Area</h4>
                                 <p>Cantidad: <span class="label label-default">'.$row_5['cantidad'].'</span></p>
+                                <a href="../libs/informes/print.php?file=print_info_exp_in.php" target="_blank"><button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir Informe</button></a><br>
                             </div>
                         </div>
                     </div>

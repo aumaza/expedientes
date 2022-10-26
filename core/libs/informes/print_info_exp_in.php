@@ -91,7 +91,7 @@
         while($row = mysqli_fetch_array($query)){
             
                     echo "<tr>";
-                    echo "<td>".$row['nro_exp']."</td>";
+                    echo "<td class='large'>".$row['nro_exp']."</td>";
                     echo "<td>".$row['fecha_ingreso']."</td>";
                     echo "<td>".$row['asunto']."</td>";
                     echo "<td>".$row['procedencia']."</td>";

@@ -72,7 +72,7 @@ $(document).ready(function(){
             data:datos,
             success:function(r){
                 if(r==1){
-                    var mensaje = '<br><div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Normativa Agregada Exitosamente</p></div>';
+                    var mensaje = '<br><div class="alert alert-success alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><p align=center><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Expediente Agregado Exitosamente</p></div>';
                     document.getElementById('messageNewExp').innerHTML = mensaje;
                     
                     $('#nro_expediente').val('');

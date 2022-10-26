@@ -25,22 +25,6 @@ p.p-justify {
     padding: 5px;
 }
 
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  valign: middle;
-  padding-top: 10px;
-  padding-bottom: 20px;
-  padding-left: 30px;
-  padding-right: 40px;
-  width: 25px;
-  
-}
 
 header {
   border: 1px solid #dddddd;
@@ -132,6 +116,7 @@ margin-right: auto;
   background-color: #f2f2f2;
   color: black;
   border-radius: 6px;
+  word-wrap: break-word;
   
 }
 

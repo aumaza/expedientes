@@ -29,7 +29,8 @@ function mainNavBar($nombre){
                         <li><button type="submit" class="btn btn-default btn-block" name="carteras"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Dependencias</button></li>';
                         
                         if($nombre == 'Administrador'){
-                            echo '<li><button type="submit" class="btn btn-default btn-block" name="usuarios"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuarios</button></li>';
+                            echo '<li><button type="submit" class="btn btn-default btn-block" name="usuarios"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Usuarios</button></li>
+                                  <li><button type="submit" class="btn btn-default btn-block" name="database_files"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Database Files</button></li>';
                         }
                 echo '<li><button type="submit" class="btn btn-warning btn-block" name="usuario"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Cambiar Password</button></li>
                         <li class="divider"></li>
@@ -209,5 +210,48 @@ function logOut($nombre){
 
 }
 
+
+function databaseFiles(){
+
+    $path = '../../sqls/';
+
+    if($filehandle = opendir($path)){
+
+        $list = array();
+        $count = 0;
+    
+        while($file = readdir($filehandle)){
+
+            if($file != "." && $file != ".."){
+            
+                $list[] = $file;
+                $count++;
+            }
+        }
+    }
+
+    echo '<div class="container">
+          <div class="jumbotron">
+            <h2><span class="glyphicon glyphicon-save" aria-hidden="true"></span> Archivos backup de Base de datos</h2>      
+            <p>Descarga de archivos SQL de Backup de base de datos</p><hr>
+
+            <div class="panel panel-primary">
+                <div class="panel-heading"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Archivos </div>
+                <div class="panel-body">
+                     <div class="list-group">';
+                        
+                        for($i = 0; $i < $count; $i++){
+                            echo '<a class="list-group-item" href="download.php?file_name='.$list[$i].'&path='.$path.'" >'.($i+1). ' - ' .$list[$i].' <span class="badge">' .filesize($path.$list[$i]).'</span></a>';
+                        }       
+                        
+          echo '</div>
+                </div>
+                <div class="panel-footer"><strong>Cantidad de Archivos:</strong> <span class="badge">'.$count.'</span></div>
+             </div>
+
+          </div>
+         </div>';
+
+}
 
 ?>

@@ -1,6 +1,83 @@
+$(document).ready(function(){
+      
+      $('#expTable').DataTable({
+        "order": [[2, "asc"]],
+        "responsive":     true,
+        "scrollY":        "300px",
+        "scrollX":        true,
+        "scrollCollapse": true,
+        "paging":         true,
+        "deferRender": true,
+        "dom":  "Bfrtip",
+        buttons: [
+            
+            {
+                extend: 'excel',
+                text: 'Export Excel',
+                messageTop: 'Expedientes',
+                exportOptions: { columns: ':visible',}
+            },
+            {
+                extend: 'csv',
+                text: 'Export CSV',
+                messageTop: 'Expedientes',
+                exportOptions: { columns: ':visible',}
+            },
+            {
+                extend: 'pdf',
+                text: 'Export PDF',
+                messageTop: 'Expedientes',
+                exportOptions: { columns: ':visible',}
+            },
+            {
+                extend: 'print', 
+                text: 'Imprimir',
+                customize: function ( win ) {
+                    $(win.document.body)
+                        .css( 'font-size', '8pt' );
+                                                
+ 
+                    $(win.document.body).find( 'table' )
+                        .addClass( 'compact' )
+                        .css( 'font-size', 'inherit' );
+                },
+                messageTop: 'Expedientes',
+                autoPrint: false,
+                exportOptions: {
+                    columns: ':visible',
+                }
+                
+            },
+            
+              'colvis'
+        ],
+        columnDefs: [ {
+            targets: -1,
+            visible: true
+        } ],
+        "fixedColumns": true,
+      "language":{
+        "lengthMenu": "Display _MENU_ records",
+        "info": "Mostrando pagina _PAGE_ de _PAGES_",
+        "infoEmpty": "No hay registros disponibles",
+        "infoFiltered": "(filtrada de _MAX_ registros)",
+        "loadingRecords": "Cargando...",
+        "processing":     "Procesando...",
+        "search": "Buscar:",
+        "zeroRecords":    "No se encontraron registros coincidentes",
+        "paginate": {
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        },
+      }
+    });
+         
+    });
+
+/*
 /*
 ** FORMATEO DE TABLA
-*/
+
 $(document).ready(function(){
       $('#expTable').DataTable({
       "order": [[1, "asc"]],
@@ -28,7 +105,7 @@ $(document).ready(function(){
     });
 
   });
-
+*/
 /*
 ** FORMATEO DE TABLA CANTIDAD DE EXPDIENTES POR USUARIOS
 */
@@ -314,3 +391,66 @@ $(document).ready(function(){
         return false;
     });
 });
+
+
+/*
+** CARGA DE DATOS DESDE ARCHIVO EXCEL
+*/
+
+$(document).ready(function(){
+    $('#upload_excel').click(function(){
+        
+        const form = document.querySelector('#fr_upload_excel_ajax');
+        const myfile = document.querySelector('#myfile');
+        
+        const formData = new FormData(form);
+        const values = [...formData.entries()];
+        console.log(values);
+        
+        formData.append('myfile', myfile.value[0]);
+        
+        jQuery.ajax({
+            type:"POST",
+            method:"POST",
+            url:"../libs/expedientes/upload_file.php",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function(r){
+                if(r == 1){
+                    alert("Archivo cargado en la Base de Datos Exitosamente!!");
+                    console.log("Datos: " + values);
+                    //window.location.href="main.php";
+                    //var url = 'main.php'
+                    var form = $('<form action="#" method="post">' +
+                      '<input type="hidden" name="expedientes" />' +
+                      '</form>');
+                    $('body').append(form);
+                    form.submit();
+                }else if(r == -1){
+                    alert("Error. Hubo un problema al intentar cargar los datos");
+                    console.log("Datos: " + values);
+                }else if(r == 5){
+                    alert("Error, Hay campos sin completar!!");
+                    console.log("Datos: " + values);
+                }else if(r == 7){
+                    alert("Error!!!...Sólo se permiten archivos con extensión [ XLS / XLSX ]");                    
+                }else if(r == 13){
+                    alert("Error de conexion!!");                    
+                }else if(r == 11){
+                    alert("Error!!...Hubo un problema al intentar abrir el archivo!!");                    
+                }else if(r == 9){
+                    alert("Error!!...Debe seleccionar un archivo!");                    
+                }
+                
+            }
+        });
+
+        return false;
+    
+});
+});
+
+
+

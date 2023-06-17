@@ -12,7 +12,7 @@
             $usuario_responsable = mysqli_real_escape_string($conn,$_POST['usuario_responsable']);
             $desc_egreso = mysqli_real_escape_string($conn,$_POST['desc_egreso']);
             
-            if((id == '') ||
+            if(($id == '') ||
                ($fecha_egreso == '') ||
                     ($destino == '') ||
                             ($usuario_responsable == '') ||

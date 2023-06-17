@@ -6,7 +6,7 @@ function encabezado(){
     echo '<div class="panel panel-default">
             <div class="panel-heading" align="center">
                 <h4><img class="img-reponsive img-rounded" src="../../img/escudo32x32.png" />
-                    <strong>Ministerio de Economía de la Nación - Dirección de Presupuesto y Evaluación de Gastos en Personal</strong>
+                    <strong>Ministerio de Economía de la Nación - Dirección Nacional de Seguimiento de la Inversión en Capital Humano del Sector Público Nacional</strong>
                 </h4>
             </div>
           </div>';

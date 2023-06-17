@@ -1,4 +1,6 @@
-<?php
+<?php 
+include '../../3rdparty/vendor/autoload.php';
+use \phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx;
 
 class Expedientes{
 
@@ -154,20 +156,25 @@ class Expedientes{
             $count = 0;
             echo '<div class="container-fluid">
                     <div class="jumbotron">
-                    <h3><span class="pull-center "><span class="glyphicon glyphicon-list-alt"></span> Listado de Expedientes</h3><hr>';
+                    <h3><span class="pull-center "><span class="glyphicon glyphicon-list-alt"></span> Listado de Expedientes</h3><hr>
+                     <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModalImportExcel"><img src="../../icons/apps/excel.png"  class="img-reponsive img-rounded"> Importar Excel</button><hr>
+                    
+                         <a href="../libs/expedientes/upload_file.php?file_name=exp_modelo.xlsx"><button type="button" class="btn btn-default btn-sm" name="download_file" data-toggle="tooltip" data-placement="right" title="Descargar Archivo Excel Modelo">
+                            <img src="../../icons/mimetypes/application-vnd.ms-excel.png"  class="img-reponsive img-rounded"> Descargar Excel Modelo</button></a>
+                     <hr>';
             
                     echo "<table class='table table-condensed table-hover' style='width:100%' id='expTable'>";
                     echo "<thead>
-                    <th class='text-nowrap text-center'>Nro. Expediente</th>
-                    <th class='text-nowrap text-center'>Fecha Ingreso</th>
-                    <th class='text-nowrap text-center'>Asunto</th>
-                    <th class='text-nowrap text-center'>Procedencia</th>
-                    <th class='text-nowrap text-center'>Descripción Ingreso</th>
-                    <th class='text-nowrap text-center'>Usuario Responsable</th>
-                    <th class='text-nowrap text-center'>Fecha Egreso</th>
-                    <th class='text-nowrap text-center'>Destino</th>
-                    <th class='text-nowrap text-center'>Descripción Egreso</th>
-                    <th class='text-nowrap text-center'>Acciones</th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Nro. Expediente</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Fecha Ingreso</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Asunto</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Procedencia</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Descripción Ingreso</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Usuario Responsable</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Fecha Egreso</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Destino</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-default'>Descripción Egreso</span></h4></th>
+                    <th class='text-nowrap text-center'><h4><span class='label label-warning'>Acciones</span></h4></th>
                     </thead>";
 
 
@@ -1095,6 +1102,253 @@ public function searchByAsunto(){
         </div>';
 
 }
+
+
+public function modalImportExcel(){
+
+    echo '<div class="modal fade" id="myModalImportExcel" role="dialog">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h2 class="modal-title"><span class="label label-default">
+                  <img src="../../icons/apps/excel.png"  class="img-reponsive img-rounded"> Importar Archivo EXCEL</span></h2>
+                </div>
+                <div class="modal-body">
+                    
+                    <form action="#" method="POST" enctype="multipart/form-data">
+                      
+                      <div class="alert alert-success">
+                      <div class="form-group">
+                        <label for="myfile">Seleccione Archivo:</label>
+                        <input type="file" id="myfile" name="myfile">
+                      </div>
+                      </div>
+                     
+                      <button type="submit" class="btn btn-default" name="upload_excel"><span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Importar</button>
+                    </form>
+                 
+                 
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span> Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>';
+
+}
+
+
+public function showExcelContent($oneExp,$myfile,$conn,$dbase){
+
+        $file = fopen("../uploads/file.csv", "w");
+
+        $fileType = pathinfo($myfile, PATHINFO_EXTENSION);
+
+        if (!empty($myfile)) {
+                // Allow certain file formats
+                $allowTypes = array('xls','xlsx');
+                              
+
+                if (in_array($fileType, $allowTypes)) {
+
+                    $targetPath = '../uploads/'.$_FILES['myfile']['name'];
+                    move_uploaded_file($_FILES['myfile']['tmp_name'], $targetPath);
+
+                    // SE INICIALA EL OBJETO
+                    $reader  = \PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile($targetPath);
+                    
+
+
+                    if($reader){
+
+                        //echo "el objeto se creo";
+                        $reader->setReadDataOnly(true);
+                        $reader->setLoadSheetsOnly('Expedientes');
+                        $spreadsheet = $reader->load($targetPath);
+
+                        $worksheet = $spreadsheet->getActiveSheet();
+
+
+                        // Get the highest row and column numbers referenced in the worksheet
+                        $highestRow = $worksheet->getHighestRow(); 
+                        $highestColumn = $worksheet->getHighestColumn(); 
+                        $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn); 
+                        
+                        for ($row = 2; $row <= $highestRow -1; $row++) {
+                            
+                            for ($col = 1; $col < 10; $col++) {
+                                
+                                if($col < 9){
+
+                                    if($col == 1){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }
+                                    if($col == 2){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                                        $UNIX_DATE = ($value - 25569) * 86400;
+                                        $value = gmdate("Y-m-d", $UNIX_DATE).';';
+                                        fwrite($file, $value);
+                                    }
+                                    if($col == 3){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }if($col == 4){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }if($col == 5){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }if($col == 6){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }
+                                    if($col == 7){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                                        $UNIX_DATE = ($value - 25569) * 86400;
+                                        $value = gmdate("Y-m-d", $UNIX_DATE).';';
+                                        fwrite($file, $value);
+                                    }
+                                    if($col == 8){
+                                        $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue().';';
+                                        fwrite($file, $value);
+                                    }
+                                    
+                                    
+                                    
+                                }
+                                if($col == 9){
+                                    $value = $worksheet->getCellByColumnAndRow($col, $row)->getValue();
+                                    fwrite($file, $value.PHP_EOL);
+                                }
+                                
+                            } // fin 'for' columns
+                            
+                            
+                        } // fin 'for' rows
+                         
+                         fclose($file);
+                         $archivo = fopen("../uploads/file.csv", "r");
+                            // Insert image file name into database
+                            $count = 0;
+                            while (($data = fgetcsv($archivo, 3000, ";")) !== FALSE) {
+                        
+                                $sql = "INSERT INTO exp_expedientes ".
+                                        "(
+                                          nro_exp,
+                                          fecha_ingreso,
+                                          asunto,
+                                          procedencia,
+                                          desc_ingreso,
+                                          usuario_responsable,
+                                          fecha_egreso,
+                                          destino,
+                                          desc_egreso
+                                        )".
+                                        "VALUES ".
+                                        "(
+                                          $oneExp->setNroExpediente('$data[0]'),
+                                          $oneExp->setFechaIngreso('$data[1]'),
+                                          $oneExp->setAsunto('$data[2]'),
+                                          $oneExp->setProcedencia('$data[3]'),
+                                          $oneExp->setDescIngreso('$data[4]'),
+                                          $oneExp->setUsuarioResponsable('$data[5]'),
+                                          $oneExp->setFechaEgreso('$data[6]'),
+                                          $oneExp->setDestino('$data[7]'),
+                                          $oneExp->setDescEgreso('$data[8]')
+                                        )";
+                                   
+                                $count++;
+                                mysqli_select_db($conn,$dbase);
+                                $res = mysqli_query($conn,$sql);
+                        
+                           } // fin 'while' carga en en base
+                                 
+                            fclose($archivo);
+                            unlink($targetPath);
+                             
+                          
+                             if($res){
+                                echo '<div class="container-fluid">
+                                          <div class="jumbotron">
+                                              <div class="alert alert-success">
+                                               <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                               <strong>Exito!</strong> El archivo se subió correctamente y se actualizó la base de datos con '.$count.' registros!.
+                                              </div><hr>
+                                              <form action="#" method="POST">
+                                                  <button type="submit" class="btn btn-default" name="expedientes">
+                                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Ir a Expedientes</button>
+                                                </form><hr>
+                                          </div>
+                                      </div>';                
+                                }else{
+                                  echo '<div class="container-fluid">
+                                          <div class="jumbotron">
+                                              <div class="alert alert-info">
+                                               <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                               <strong>Atención!</strong> Hubo un problema al intentar actualizar la base de datos.
+                                              </div><hr>
+                                              <form action="#" method="POST">
+                                                  <button type="submit" class="btn btn-default" name="expedientes">
+                                                  <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Volver</button>
+                                                </form><hr>
+                                          </div>
+                                      </div>';
+                                }
+                    }else{
+                        echo '<div class="container-fluid">
+                              <div class="jumbotron">
+                                  <div class="alert alert-info">
+                                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                   <strong>Atención!</strong> Se produjo un error al intentar subir el archivo.
+                                  </div><hr>
+                                  <form action="#" method="POST">
+                                      <button type="submit" class="btn btn-default" name="expedientes">
+                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Volver</button>
+                                    </form><hr>
+                              </div>
+                          </div>';
+                    }          
+                    
+                }else{
+                    echo '<div class="container-fluid">
+                              <div class="jumbotron">
+                                  <div class="alert alert-info">
+                                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                   <strong>Atención!</strong> Sólo se permiten achivos con extensión xls / xlsx.
+                                  </div><hr>
+                                  <form action="#" method="POST">
+                                      <button type="submit" class="btn btn-default" name="expedientes">
+                                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Volver</button>
+                                    </form><hr>
+                              </div>
+                          </div>';
+                    //echo 7; // solo se permiten achivos xls / xlsx
+                }
+
+        }else{
+            echo '<div class="container-fluid">
+                      <div class="jumbotron">
+                          <div class="alert alert-info">
+                           <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                           <strong>Atención!</strong> Debe Seleccionar un Archivo.
+                          </div><hr>
+                          <form action="#" method="POST">
+                                <button type="submit" class="btn btn-default" name="expedientes">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> Volver</button>
+                          </form><hr>
+                      </div>
+                  </div>';
+        }
+
+
+} // end of function
+
+
+
+
 
 
 } // FIN DE CLASE

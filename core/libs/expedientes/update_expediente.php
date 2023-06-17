@@ -14,8 +14,8 @@
             $usuario_responsable = mysqli_real_escape_string($conn,$_POST['usuario_responsable']);
             $desc_ingreso = mysqli_real_escape_string($conn,$_POST['desc_ingreso']);
             
-            if((id == '') ||
-               (nro_expediente == '') ||
+            if(($id == '') ||
+               ($nro_expediente == '') ||
                 ($fecha_ingreso == '') ||
                     ($asunto == '') ||
                         ($procedencia == '') ||

@@ -52,7 +52,7 @@
   
  
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="50" onload="nobackbutton();" style = "background: #839192;">
+<body data-spy="affix" data-target=".navbar" data-offset="197" onload="nobackbutton();" style = "background: #839192;">
 
 <div class="panel-group">
     
@@ -166,6 +166,13 @@
         if(isset($_POST['search_asunto'])){
             $oneExp->searchByAsunto();
         }
+        if(isset($_POST['upload_excel'])){
+            $myfile = basename($_FILES["myfile"]["name"]);
+            $oneExp->showExcelContent($oneExp,$myfile,$conn,$dbase);
+        }
+        
+
+        $oneExp->modalImportExcel();
         
         
         // =================================================== FIN ESPACIO EXPEDIENTES ========================================== //

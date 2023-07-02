@@ -7,7 +7,7 @@ $dbuser = 'root';
 $dbpass = 'slack142';
 $dbase = 'gnu_expedientes';
 */
-//
+
 // DATOS DE CONEXION PARA SERVER PRODUCCION
 
 $dbhost = 'localhost';
